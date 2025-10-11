@@ -54,10 +54,10 @@ public class HttpRequestNode extends AbstractNode {
             this.url = url;
             this.method = NodeVerify.requiredMethod(params);
 
-            String param = params.getString("params");
+            String param = params.getString("requestParams");
             if (StringUtils.hasLength(param)) {
-                NodeVerify.isTrue(param.contains("=") && !param.startsWith("?"), "params");
-                NodeVerify.isTrue(!param.startsWith("=") && !param.endsWith("="), "params");
+                NodeVerify.isTrue(param.contains("=") && !param.startsWith("?"), "requestParams");
+                NodeVerify.isTrue(!param.startsWith("=") && !param.endsWith("="), "requestParams");
                 this.url = url + "?" + param;
             }
 
