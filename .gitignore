@@ -42,3 +42,5 @@ build/
 flow-eda-common/.DS_Store
 flow-eda-vue/yarn.lock
 logs/
+
+nacos
