@@ -577,6 +577,8 @@ INSERT INTO `eda_flow_node_type` VALUES (54, 'postgresql', 'PostgreSQL', '数据
 INSERT INTO `eda_flow_node_type` VALUES (100, 'subflow', '子流程', '子流程', '/svg/subflow.svg', 'rgb(200 70 180 / 62%)', '子流程节点，可选择其他流程作为子流程来执行，本节点的输入参数可传递至子流程中的[子输入节点]，子流程中的[子输出节点]可将输出参数返回至本节点作为输出参数');
 INSERT INTO `eda_flow_node_type` VALUES (101, 'sub_input', '子输入', '子流程', '/svg/sub_input.svg', 'rgb(190 70 50 / 42%)', '子流程输入节点，用于子流程中，可接收关联的[子流程节点]的输入参数');
 INSERT INTO `eda_flow_node_type` VALUES (102, 'sub_output', '子输出', '子流程', '/svg/sub_output.svg', 'rgb(120 150 90 / 42%)', '子流程输出节点，用于子流程中，可将本节点的输出参数传递给关联的[子流程节点]作为输出参数');
+-- 自定义算法：TIF路径处理（将 inputTifPath 去掉子级，输出到 outputTifPath）
+INSERT INTO `eda_flow_node_type` VALUES (10, 'tif_path', 'TIF路径', '算法', '/svg/sequence.svg', 'rgb(200 180 75 / 60%)', '根据输入的 inputTifPath，输出父级目录到 outputTifPath');
 
 -- ----------------------------
 -- Table structure for eda_flow_node_type_param
@@ -678,5 +680,7 @@ INSERT INTO `eda_flow_node_type_param` VALUES (78, 54, 'password', '密码', 1, 
 INSERT INTO `eda_flow_node_type_param` VALUES (79, 54, 'sql', '执行SQL语句', 1, 'input', NULL, '支持单条或多条sql语句，多条语句之间使用分号相隔');
 INSERT INTO `eda_flow_node_type_param` VALUES (80, 9, 'times', '执行次数', 0, 'input', NULL, '默认1');
 INSERT INTO `eda_flow_node_type_param` VALUES (81, 9, 'period', '限制周期（单位：ms）', 0, 'input', NULL, '默认100');
+-- TIF路径 节点参数：可直接输入路径，也可从上游input传递
+INSERT INTO `eda_flow_node_type_param` VALUES (82, 10, 'inputTifPath', 'TIF路径', 0, 'input', NULL, 'D:/path/to/file.tif');
 
 SET FOREIGN_KEY_CHECKS = 1;

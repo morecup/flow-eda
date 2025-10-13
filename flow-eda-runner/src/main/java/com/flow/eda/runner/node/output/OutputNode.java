@@ -20,5 +20,7 @@ public class OutputNode extends AbstractNode {
     }
 
     @Override
-    protected void verify(Document params) {}
+    protected void verify(Document params) {
+        System.out.println(params);
+    }
 }
