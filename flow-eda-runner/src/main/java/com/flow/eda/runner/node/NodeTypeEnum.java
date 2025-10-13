@@ -4,6 +4,9 @@ import com.flow.eda.common.dubbo.model.FlowData;
 import com.flow.eda.common.exception.InternalException;
 import com.flow.eda.runner.node.condition.ConditionNode;
 import com.flow.eda.runner.node.delay.DelayNode;
+import com.flow.eda.runner.node.algorithm.TifPathNode;
+import com.flow.eda.runner.node.algorithm.GenericAlgorithmNode;
+import com.flow.eda.runner.node.standard.StandardizeParamNode;
 import com.flow.eda.runner.node.email.EmailNode;
 import com.flow.eda.runner.node.http.receive.HttpReceiveNode;
 import com.flow.eda.runner.node.http.request.HttpRequestNode;
@@ -46,6 +49,9 @@ public enum NodeTypeEnum {
     SPLICE("splice", SpliceNode.class),
     SPLIT("split", SplitNode.class),
     VALVE("valve", ValveNode.class),
+    STANDARDIZE("standardize", StandardizeParamNode.class),
+    GENERIC_ALGO("generic_algo", GenericAlgorithmNode.class),
+    TIF_PATH("tif_path", TifPathNode.class),
 
     /** 解析节点 */
     JSON_PARSER("json_parser", JsonParserNode.class),
