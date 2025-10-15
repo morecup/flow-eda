@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 /** 日志服务接口 */
-@FeignClient(name = "log", url = "localhost:8082")
+@FeignClient(name = "flow-eda-logger")
 public interface LogClient {
     /**
      * 获取日志信息列表

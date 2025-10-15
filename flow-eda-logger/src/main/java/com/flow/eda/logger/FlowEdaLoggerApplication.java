@@ -2,10 +2,12 @@ package com.flow.eda.logger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
+@EnableDiscoveryClient
 @SpringBootApplication
 @ComponentScan(
         basePackages = {

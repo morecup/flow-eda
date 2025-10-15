@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 /** 获取流程状态信息接口 */
-@FeignClient(name = "flowStatus", url = "localhost:8081")
+@FeignClient(name = "flow-eda-web")
 public interface FlowStatusClient {
     /**
      * 获取流程状态
