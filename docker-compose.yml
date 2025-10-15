@@ -1,17 +1,17 @@
 version: "3.9"
 
 services:
-  mysql:
-    image: mysql
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    ports:
-      - "3306:3306"
-    volumes:
-      - /root/app/mysql/data/:/var/lib/mysql
-      - /root/app/mysql/conf.d:/etc/mysql/conf.d
-      - /root/app/mysql/my.cnf:/etc/mysql/my.cnf
+  # mysql:
+  #   image: mysql
+  #   container_name: mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 123456
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - /root/app/mysql/data/:/var/lib/mysql
+  #     - /root/app/mysql/conf.d:/etc/mysql/conf.d
+  #     - /root/app/mysql/my.cnf:/etc/mysql/my.cnf
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -23,8 +23,6 @@ services:
   nacos:
     image: nacos/nacos-server
     container_name: nacos
-    depends_on:
-      - mysql
     ports:
       - "8848:8848"
       - "8080:8080"
@@ -32,18 +30,15 @@ services:
       - "9849:9849"
     environment:
       MODE: standalone
-      SPRING_DATASOURCE_PLATFORM: mysql
-      MYSQL_SERVICE_HOST: mysql
-      MYSQL_SERVICE_USER: root
-      MYSQL_SERVICE_PASSWORD: 123456
-      MYSQL_SERVICE_DB_NAME: nacos_config
-      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
       NACOS_AUTH_TOKEN: SecretKey012345678901234567890123456789012345678901234567
       NACOS_AUTH_IDENTITY_KEY: serverIdentity
       NACOS_AUTH_IDENTITY_VALUE: security
       JVM_XMS: 256m
       JVM_XMX: 256m
       JVM_XMN: 256m
+    volumes:
+      - /root/app/nacos/data:/home/nacos/data
+      - /root/app/nacos/logs:/home/nacos/logs
   nginx:
     image: nginx
     container_name: nginx
