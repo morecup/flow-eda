@@ -44,3 +44,5 @@ flow-eda-vue/yarn.lock
 logs/
 
 nacos
+
+.*/
