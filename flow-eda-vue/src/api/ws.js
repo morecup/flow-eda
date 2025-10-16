@@ -7,7 +7,7 @@ let logContentWs = {};
 // 建立连接，监听消息并进行回调
 export function onOpen(id, callback) {
   if (Object.keys(ws).length === 0 || !ws[id]) {
-    const url = ":8088/ws/flow/" + id + "/nodes";
+    const url = "/ws/flow/" + id + "/nodes";
     ws[id] = newWebSocket(url, callback);
   }
 }
@@ -20,7 +20,7 @@ export function onClose(id) {
 // 监听日志消息
 export function onOpenLogs(id, callback) {
   if (Object.keys(logWs).length === 0 || !logWs[id]) {
-    const url = ":8082/ws/flow/" + id + "/logs";
+    const url = "/ws/logs/flow/" + id + "/logs";
     logWs[id] = newWebSocket(url, callback);
   }
 }
@@ -32,7 +32,7 @@ export function onCloseLogs(id) {
 // 接收日志文件内容
 export function onOpenLogDetail(path, callback) {
   if (Object.keys(logContentWs).length === 0 || !logContentWs[path]) {
-    const url = ":8082/ws/logs/content/" + path.replaceAll("/", ":");
+    const url = "/ws/logs/content/" + path.replaceAll("/", ":");
     logContentWs[path] = newWebSocket(url, callback);
   }
 }
