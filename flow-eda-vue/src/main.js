@@ -15,5 +15,4 @@ app
   .use(store)
   .use(router)
   .mount("#app");
-
-window.$wsIp = "ws://localhost";
+// 不强制指定 WS 基址，交由前端根据当前站点自动推断（见 utils/websocket.js）
