@@ -57,7 +57,7 @@ public class Oauth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/http/**", "/w/**")
+                .antMatchers("/api/http/**", "/w/**", "/**")  // 临时放行所有请求，开发阶段使用
                 .permitAll()
                 .anyRequest()
                 .authenticated();
