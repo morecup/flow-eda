@@ -10,49 +10,22 @@
         <div class="user-avatar">
           <img alt="" src="../assets/img/logo.png" />
         </div>
-        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{ username }}
-            <i class="el-icon-caret-bottom"></i>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <a href="https://github.com/Linxfeng/flow-eda" target="_blank">
-                <el-dropdown-item>代码仓库</el-dropdown-item>
-              </a>
-              <el-dropdown-item divided command="logout"
-                >退出登录
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <span class="el-dropdown-link">Flow-EDA</span>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { userInfo, userLogout } from "../api/oauth2";
 
 export default {
   setup() {
     const router = useRouter();
     const store = useStore();
     const collapse = computed(() => store.state.collapse);
-    const username = ref("");
-
-    // 获取当前用户信息
-    const getUserInfo = () => {
-      userInfo().then((res) => {
-        if (res && res.result) {
-          username.value = res.result.username;
-          localStorage.setItem("username", res.result.username);
-        }
-      });
-    };
-    getUserInfo();
+    
 
     // 侧边栏折叠
     const collapseChange = () => {
@@ -67,17 +40,9 @@ export default {
     });
 
     // 下拉选项命令
-    const handleCommand = async (command) => {
-      if (command === "logout") {
-        // 退出登录
-        await userLogout();
-        store.state.tagsList = [];
-        await router.push("/");
-      }
-    };
+    const handleCommand = async () => {};
 
     return {
-      username,
       collapse,
       collapseChange,
       handleCommand,

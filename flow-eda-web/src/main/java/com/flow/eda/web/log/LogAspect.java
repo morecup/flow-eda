@@ -12,8 +12,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -45,7 +43,7 @@ public class LogAspect {
 
         Object proceed = point.proceed();
         long end = Instant.now().toEpochMilli();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String user = "guest";
 
         // 获取请求参数
         String args;
@@ -58,7 +56,7 @@ public class LogAspect {
 
         log.info(
                 "USER: {}, URI: {}, METHOD: {} {}, IP: {}, STATUS: {}, TIME: {}, ARGS: {}",
-                auth.getName(),
+                user,
                 request.getRequestURI(),
                 request.getMethod(),
                 point.getSignature().getName(),
@@ -76,10 +74,9 @@ public class LogAspect {
         if (e instanceof FlowException) {
             status = ((FlowException) e).getStatus();
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.error(
                 "USER: {}, URI: {}, METHOD: {}, IP: {}, STATUS: {}, ERROR: {}",
-                auth.getName(),
+                "guest",
                 request.getRequestURI(),
                 request.getMethod(),
                 RequestUtil.getIp(request),

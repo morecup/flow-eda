@@ -12,12 +12,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/v1/, '/flow-eda-web/api/v1'),
       },
-      // OAuth2服务请求通过网关
-      "^/oauth": {
-        target: `http://localhost:8090`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/oauth/, '/flow-eda-oauth2/oauth'),
-      },
       // Runner服务 WebSocket 通过网关
       "^/ws/flow": {
         target: `http://localhost:8090`,

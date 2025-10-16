@@ -9,8 +9,6 @@ import com.flow.eda.web.log.OperationLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -20,17 +18,18 @@ public class FlowController {
 
     @OperationLog
     @GetMapping("/flow")
-    public PageResult<Flow> listFlow(FlowRequest request, Principal principal) {
-        String name = principal.getName();
-        request.setUsername("admin".equals(name) ? null : name);
+    public PageResult<Flow> listFlow(FlowRequest request) {
+        // 无用户区分，查询全部
+        request.setUsername(null);
         return PageResult.of(flowService.listFlowByPage(request));
     }
 
     @OperationLog
     @PostMapping("/flow")
-    public Result<Flow> addFlow(@RequestBody Flow flow, Principal principal) {
+    public Result<Flow> addFlow(@RequestBody Flow flow) {
         this.check(flow);
-        flow.setUsername(principal.getName());
+        // 无用户区分
+        flow.setUsername(null);
         flowService.addFlow(flow);
         return Result.of(flow);
     }

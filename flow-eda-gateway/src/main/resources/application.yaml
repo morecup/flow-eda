@@ -20,13 +20,6 @@ spring:
             - Path=/flow-eda-web/**
           filters:
             - StripPrefix=1
-        # OAuth2服务路由
-        - id: flow-eda-oauth2
-          uri: lb://flow-eda-oauth2
-          predicates:
-            - Path=/flow-eda-oauth2/**
-          filters:
-            - StripPrefix=1
         # Logger服务路由
         - id: flow-eda-logger
           uri: lb://flow-eda-logger
@@ -64,8 +57,7 @@ spring:
 # 白名单配置（不需要认证的路径）
 ignore:
   whites:
-    - /oauth/token
-    - /oauth/check_token
+    # oauth 移除后无需白名单
     - /web/flow/data/page
     - /web/node/page
     - /actuator/**

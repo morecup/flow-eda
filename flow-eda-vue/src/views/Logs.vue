@@ -93,7 +93,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   name: "Logs",
   setup() {
-    const username = localStorage.getItem("username");
+    const username = null; // 无用户区分
 
     // 查询参数
     const params = reactive({

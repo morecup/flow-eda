@@ -1,33 +1,12 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
 import Flows from "../views/Flows.vue";
 import Editor from "../views/Editor.vue";
 import Logs from "../views/Logs.vue";
 import LogDetail from "../views/LogDetail.vue";
 
 const routes = [
-  {
-    path: "/",
-    redirect: "/login",
-  },
-  {
-    path: "/login",
-    name: "Login",
-    meta: {
-      title: "用户登录",
-    },
-    component: Login,
-  },
-  {
-    path: "/register",
-    name: "Register",
-    meta: {
-      title: "用户注册",
-    },
-    component: Register,
-  },
+  { path: "/", redirect: "/flows" },
   {
     path: "/",
     name: "Home",

@@ -43,7 +43,6 @@
     <modules>
         <module>flow-eda-common</module>
         <module>flow-eda-logger</module>
-        <module>flow-eda-oauth2</module>
         <module>flow-eda-runner</module>
         <module>flow-eda-web</module>
         <module>flow-eda-gateway</module>

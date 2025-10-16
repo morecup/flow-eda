@@ -15,13 +15,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-/**
- * 认证过滤器
- *
- * @author flow-eda
- */
+/** 认证过滤器（已禁用，无需鉴权） */
 @Slf4j
-// @Component  // 临时禁用认证过滤器，开发阶段使用
+// @Component  // 保持禁用
 public class AuthFilter implements GlobalFilter, Ordered {
 
     @Autowired
@@ -33,21 +29,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
-
-        // 跳过白名单路径
-        if (isWhitePath(path)) {
-            return chain.filter(exchange);
-        }
-
-        // 获取 token
-        String token = getToken(request);
-        if (token == null || token.isEmpty()) {
-            log.warn("请求路径: {} 缺少认证令牌", path);
-            return unauthorizedResponse(exchange, "令牌不能为空");
-        }
-
-        // 这里可以添加 token 验证逻辑
-        // 例如：调用 OAuth2 服务验证 token
 
         return chain.filter(exchange);
     }
@@ -64,31 +45,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return false;
     }
 
-    /**
-     * 获取请求 token
-     */
-    private String getToken(ServerHttpRequest request) {
-        HttpHeaders headers = request.getHeaders();
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-
-        if (token != null && token.startsWith("Bearer ")) {
-            return token.substring(7);
-        }
-
-        return token;
-    }
-
-    /**
-     * 返回未授权响应
-     */
-    private Mono<Void> unauthorizedResponse(ServerWebExchange exchange, String message) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
-
-        String body = String.format("{\"code\":401,\"msg\":\"%s\"}", message);
-        return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
-    }
+    // 移除 token 读取与未授权响应逻辑
 
     @Override
     public int getOrder() {
