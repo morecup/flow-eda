@@ -119,7 +119,7 @@ import {
   setNodeData,
   stopNodeData,
 } from "../api/nodeData.js";
-import { onClose, onCloseLogs, onOpen, onOpenLogs } from "../api/ws.js";
+// WS 已移除，使用轮询替代
 import panzoom from "panzoom";
 import toolbar from "../components/editor/Toolbar.vue";
 import flowNode from "../components/editor/FlowNode.vue";
@@ -627,40 +627,39 @@ export default {
     // 展示/关闭流程实时运行日志
     const logVisible = ref(false);
     let logContent = ref("");
+    let logTimer;
+    const fetchLogContent = async () => {
+      // 通过 web 透传接口获取日志内容
+      const path = `/logs/running/${props.flowId}/${new Date().toISOString().slice(0,10)}.log`;
+      const res = await fetch(`/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+      if (res.ok) {
+        const text = await res.text();
+        // 接口返回 Result<String> 时取 body 解析；此处简化为直接文本
+        try { const json = JSON.parse(text); logContent.value = json.result || ""; }
+        catch { logContent.value = text; }
+      }
+    };
     const showLogs = (show) => {
       if (show) {
         logVisible.value = true;
-        onOpenLogs(props.flowId, (s) => {
-          logContent.value = logContent.value.concat(s);
-        });
+        clearInterval(logTimer);
+        logTimer = setInterval(fetchLogContent, 2000);
       } else {
         logVisible.value = false;
+        clearInterval(logTimer);
       }
     };
 
-    // 建立websocket连接，获取节点状态信息
+    // 轮询获取流程状态
     const flowStatus = ref("");
-    const getNodeStatus = () => {
-      onOpen(props.flowId, (s) => {
-        const res = JSON.parse(s);
-        if (res.flowStatus) {
-          flowStatus.value = res.flowStatus;
-        }
-        if (res.nodeId) {
-          data.nodeList.forEach((node) => {
-            if (node.id === res.nodeId) {
-              node.status = res.status;
-              if (res.output) {
-                node.output = res.output;
-              }
-              if (res.error) {
-                node.error = res.error;
-                ElMessage.error(res.error);
-              }
-            }
-          });
-        }
-      });
+    let statusTimer;
+    const pollStatus = async () => {
+      const res = await fetch(`/api/v1/feign/flow/status?flowId=${props.flowId}`);
+      if (res.ok) {
+        const t = await res.text();
+        try { const j = JSON.parse(t); flowStatus.value = j.result; }
+        catch { flowStatus.value = t; }
+      }
     };
 
     // 获取版本列表
@@ -777,16 +776,17 @@ export default {
       await nextTick(() => {
         init();
       });
-      // 建立websocket连接
-      getNodeStatus();
+      // 启动轮询
+      clearInterval(statusTimer);
+      statusTimer = setInterval(pollStatus, 1000);
       // 获取版本列表
       await getVersions();
     });
 
     // 组件被销毁之前，关闭socket连接
     onBeforeUnmount(() => {
-      onCloseLogs(props.flowId);
-      onClose(props.flowId);
+      clearInterval(statusTimer);
+      clearInterval(logTimer);
       jsPlumbInstance.reset();
     });
 

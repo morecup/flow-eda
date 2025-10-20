@@ -40,3 +40,11 @@
 - 状态接口正常；
 - 日志内容透传可用；
 - 配置无 oauth2 相关项。
+
+## TDD 测试策略
+1) 先写测试
+- 为 `LogController` 透传方法新增单元测试：Mock `LogClient`，断言 `/api/v1/logs/content` 将参数原样转发并回传结果；
+- 为 `FlowStatusController` 现有接口补齐单元测试：flow/status 与 flow/data 参数校验与返回；
+
+2) 集成测试（可选）
+- SpringBootTest 启动 web 应用，使用 `@MockBean LogClient` 注入，验证路由与返回结构。

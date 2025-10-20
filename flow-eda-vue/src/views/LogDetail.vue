@@ -18,7 +18,7 @@ import Codemirror from "codemirror-editor-vue3";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/theme/dracula.css";
 import { onBeforeUnmount, ref, watch } from "vue";
-import { onCloseLogDetail, onOpenLogDetail } from "../api/ws.js";
+// WS 已移除，使用轮询替代
 
 export default {
   name: "LogDetail",
@@ -45,11 +45,17 @@ export default {
     );
 
     // 获取日志内容
+    let timer;
     const getData = (path) => {
-      logContent.value = "";
-      onOpenLogDetail(path, (s) => {
-        logContent.value = logContent.value.concat(s);
-      });
+      clearInterval(timer);
+      timer = setInterval(async () => {
+        const res = await fetch(`/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+        if (res.ok) {
+          const text = await res.text();
+          try { const json = JSON.parse(text); logContent.value = json.result || ""; }
+          catch { logContent.value = text; }
+        }
+      }, 2000);
     };
 
     // 初始加载
@@ -57,7 +63,7 @@ export default {
 
     // 组件被销毁之前，关闭socket连接
     onBeforeUnmount(() => {
-      onCloseLogDetail(props.path);
+      clearInterval(timer);
     });
 
     return {

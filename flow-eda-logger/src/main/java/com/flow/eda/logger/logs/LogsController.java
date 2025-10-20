@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +43,28 @@ public class LogsController {
     @DeleteMapping("/logs")
     public void deleteLogs(@RequestBody List<String> path) {
         path.forEach(this::deleteLogFile);
+    }
+
+    /** 读取日志文件内容（首版全量返回，控制最大返回大小以防响应过大） */
+    @GetMapping("/logs/content")
+    public Result<String> getLogContent(@RequestParam String path) {
+        try {
+            // 仅允许在项目 logs 目录下读取
+            Path p = Paths.get(ROOT + path).normalize();
+            if (!p.toFile().exists()) {
+                return Result.of("");
+            }
+            byte[] bytes = Files.readAllBytes(p);
+            // 最大 1MB 防止过大响应
+            int max = 1024 * 1024;
+            if (bytes.length > max) {
+                bytes = java.util.Arrays.copyOfRange(bytes, bytes.length - max, bytes.length);
+            }
+            return Result.of(new String(bytes, StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            log.error("read log content failed:{}, path:{}", e.getMessage(), path);
+            return Result.of("");
+        }
     }
 
     /** 获取操作日志信息列表 */

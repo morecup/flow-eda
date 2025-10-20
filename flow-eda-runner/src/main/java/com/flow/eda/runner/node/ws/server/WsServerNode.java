@@ -37,11 +37,7 @@ public class WsServerNode extends AbstractNode implements FlowBlockNodePool.Bloc
         WsServerNodeManager.addEndpoint(this);
 
         // 上游节点输出参数发送
-        if (this.fanout) {
-            // 根据path路径广播发送
-            Document output = this.nodeParams.output(this).remove("input", "payload").get();
-            WsServerNodeHandler.sendMessage(path, output.toJson());
-        }
+        // WebSocket 已移除：不再广播
     }
 
     @Override
@@ -88,8 +84,7 @@ public class WsServerNode extends AbstractNode implements FlowBlockNodePool.Bloc
     public void destroy() {
         // 移除ws端点
         WsServerNodeManager.removeEndpoint(this);
-        // 关闭ws连接
-        WsServerNodeHandler.onClose(this.path);
+        // WebSocket 已移除：无需关闭连接
     }
 
     @Override

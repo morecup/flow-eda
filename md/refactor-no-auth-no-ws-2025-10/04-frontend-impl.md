@@ -43,3 +43,11 @@
 - Editor 状态每秒更新；
 - Logs/LogDetail 能持续刷新日志；
 - 开发代理不再含 WS 项。
+
+## TDD 测试策略
+1) 组件级测试（可选，若项目集成了测试框架）
+- Editor：mock request 层，验证 1s 轮询触发与状态更新；
+- Logs/LogDetail：mock 日志内容接口，验证 2s 轮询并追加渲染；
+
+2) e2e（可选）
+- 启动后端 mock 或 dev 服务，使用 Cypress/Playwright 验证交互与轮询更新。

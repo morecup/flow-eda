@@ -30,8 +30,6 @@ import com.flow.eda.runner.node.subflow.input.SubInputNode;
 import com.flow.eda.runner.node.subflow.output.SubOutputNode;
 import com.flow.eda.runner.node.timer.TimerNode;
 import com.flow.eda.runner.node.valve.ValveNode;
-import com.flow.eda.runner.node.ws.client.WsClientNode;
-import com.flow.eda.runner.node.ws.server.WsServerNode;
 import lombok.Getter;
 
 /** 节点类型 */
@@ -62,8 +60,6 @@ public enum NodeTypeEnum {
     HTTP_REQUEST("http_request", HttpRequestNode.class),
     HTTP_RECEIVE("http_receive", HttpReceiveNode.class),
     HTTP_RESPONSE("http_response", HttpResponseNode.class),
-    WS_SERVER("ws_server", WsServerNode.class),
-    WS_CLIENT("ws_client", WsClientNode.class),
     MQTT_SUB("mqtt_sub", SubMqttNode.class),
     MQTT_PUB("mqtt_pub", PubMqttNode.class),
     EMAIL("email", EmailNode.class),

@@ -1,0 +1,4 @@
+前端测试提示：
+1) 若已集成组件测试框架（如 Vitest + @vue/test-utils），为 Editor/Logs/LogDetail 增加轮询逻辑的单测；
+2) e2e 建议使用 Cypress/Playwright，在 dev 服务下验证轮询更新；
+3) 若当前项目未接入测试框架，可暂以最小脚手架添加后续再补。

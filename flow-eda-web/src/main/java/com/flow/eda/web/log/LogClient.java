@@ -29,4 +29,8 @@ public interface LogClient {
      */
     @DeleteMapping("/api/v1/feign/logs")
     void deleteLogFiles(@RequestBody List<String> path);
+
+    /** 读取日志内容 */
+    @GetMapping("/api/v1/feign/logs/content")
+    Result<String> getLogContent(@RequestParam String path);
 }

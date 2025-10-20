@@ -28,3 +28,11 @@
 - 配置中无 oauth2 相关项；
 - 无任何 `/ws/*` 路由；
 - 系统运行流程与日志功能正常。
+
+## TDD 测试策略
+1) 配置静态校验
+- 在 CI 中增加脚本检查：禁止出现 `spring-boot-starter-websocket` 依赖与 `/ws/` 路由；
+- 校验应用配置不包含 `flow.oauth2.*`。
+
+2) 冒烟自动化
+- 启动最小部署（runner/web/logger + RabbitMQ），执行一个简单流程，断言前端轮询可见状态/日志。

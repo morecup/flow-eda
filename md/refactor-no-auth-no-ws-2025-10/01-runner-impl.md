@@ -47,6 +47,17 @@
 - `mvn -pl flow-eda-runner -DskipTests=false clean package`
 - 处理编译期因删除类导致的引用残留（按提示清理 import 或代码）。
 
+## TDD 测试策略
+1) 先写测试再改造（红 → 绿 → 重构）
+- 状态计算：为 `FlowStatusService` 增加单元测试，覆盖 `startRun/add/remove/isFinished/getFlowStatus/clear` 分支；
+- 执行器行为：为 `FlowExecutor` 编写测试桩，模拟 Node 执行完成/失败，断言对 `FlowStatusService` 与 `FlowStatusMqProducer` 的交互（使用 Mockito）；
+- 运行时：为 `FlowDataRuntime` 的 `stopFlowData/clearFlowData` 编写测试，断言线程池关闭与最终状态发送；
+
+2) 删除 WS 后的回归测试
+- 确认无 `@ServerEndpoint` Bean；
+- NodeTypeEnum 不包含 WS 常量；
+- 运行流程的集成测试（可用 SpringBootTest + Testcontainers/RabbitMQ 或 Mock RabbitTemplate）验证 MQ 发送。
+
 ## 回归点
 - 启动 runner 后无 WebSocket 端点；
 - 运行流程时，通过 MQ 能看到 `flow.status.updated` 消息；

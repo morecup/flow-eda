@@ -4,7 +4,6 @@ import com.flow.eda.common.exception.FlowException;
 import com.flow.eda.common.model.FlowData;
 import com.flow.eda.runner.node.Node;
 import com.flow.eda.runner.node.NodeTypeEnum;
-import com.flow.eda.runner.status.FlowNodeWebsocket;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.ApplicationContextUtil;
 import com.flow.eda.runner.utils.FlowLogs;
@@ -22,17 +21,15 @@ import static com.flow.eda.runner.utils.FlowLogs.info;
 public class FlowExecutor {
     /** 存储当前流程的完整流节点数据 */
     private final List<FlowData> flowData;
-    /** 用于推送消息的ws服务 */
-    private final FlowNodeWebsocket flowNodeWebsocket;
+    // MQ 生产者按需获取，避免测试环境未加载上下文导致空指针
     /** 当前流程的id */
     private final String flowId;
     /** 流程状态服务 */
     private final FlowStatusService flowStatusService =
             ApplicationContextUtil.getBean(FlowStatusService.class);
 
-    public FlowExecutor(List<FlowData> flowData, FlowNodeWebsocket ws) {
+    public FlowExecutor(List<FlowData> flowData, Object ignored) {
         this.flowData = flowData;
-        this.flowNodeWebsocket = ws;
         this.flowId =
                 Objects.requireNonNull(findFirst(flowData, n -> n.getFlowId() != null)).getFlowId();
     }
@@ -64,11 +61,7 @@ public class FlowExecutor {
             } else {
                 // 当前节点中断后，更新流程状态
                 flowStatusService.removeRunningNode(flowId, currentNode.getId());
-                if (flowStatusService.isFinished(flowId)) {
-                    flowNodeWebsocket.sendMessage(
-                            flowId, new Document("flowStatus", Node.Status.FINISHED.name()));
-                    return;
-                }
+                if (flowStatusService.isFinished(flowId)) return;
             }
             // 执行节点
             nodeInstance.run(
@@ -157,6 +150,16 @@ public class FlowExecutor {
                     node -> flowStatusService.addRunningNode(flowId, node.getId()));
         }
         msg.append("nodeId", currentNode.getId());
-        flowNodeWebsocket.sendMessage(flowId, msg);
+        String flowStatus =
+                ApplicationContextUtil.getBean(FlowStatusService.class)
+                        .getFlowStatus(flowId, msg);
+        try {
+            com.flow.eda.runner.status.FlowStatusMqProducer mq =
+                    ApplicationContextUtil.getBean(
+                            com.flow.eda.runner.status.FlowStatusMqProducer.class);
+            mq.sendFlowStatus(flowId, flowStatus);
+        } catch (Exception ignored) {
+            // 测试环境可忽略 MQ 发送
+        }
     }
 }

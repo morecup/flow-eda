@@ -4,7 +4,7 @@ import com.flow.eda.common.model.FlowData;
 import com.flow.eda.common.utils.CollectionUtil;
 import com.flow.eda.runner.node.Node;
 import com.flow.eda.runner.node.NodeTypeEnum;
-import com.flow.eda.runner.status.FlowNodeWebsocket;
+import com.flow.eda.runner.status.FlowStatusMqProducer;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.FlowLogs;
 import org.bson.Document;
@@ -19,7 +19,7 @@ import static com.flow.eda.runner.runtime.FlowThreadPool.getThreadPool;
 
 @Service
 public class FlowDataRuntime {
-    @Autowired private FlowNodeWebsocket ws;
+    @Autowired private FlowStatusMqProducer mqProducer;
     @Autowired private FlowStatusService flowStatusService;
 
     /** 运行流程 */
@@ -36,10 +36,10 @@ public class FlowDataRuntime {
         // 异步执行
         forEach(
                 starts,
-                d -> getThreadPool(flowId).execute(() -> new FlowExecutor(data, ws).start(d)));
+                d -> getThreadPool(flowId).execute(() -> new FlowExecutor(data, null).start(d)));
         forEach(
                 timers,
-                d -> getThreadPool(flowId).execute(() -> new FlowExecutor(data, ws).start(d)));
+                d -> getThreadPool(flowId).execute(() -> new FlowExecutor(data, null).start(d)));
     }
 
     /** 停止流程 */
@@ -48,17 +48,8 @@ public class FlowDataRuntime {
         FlowThreadPool.shutdownThreadPool(flowId);
         FlowThreadPool.shutdownSchedulerPool(flowId);
         FlowBlockNodePool.shutdownBlockNode(flowId);
-        // 获取运行中的节点id，推送中断信息
-        List<String> nodes = flowStatusService.getRunningNodes(flowId);
-        // 手动停止的流程更新流程状态为已完成
-        Document status = new Document("flowStatus", Node.Status.FINISHED.name());
-        if (CollectionUtil.isNotEmpty(nodes)) {
-            status.append("status", Node.Status.FAILED.name()).append("error", "node interrupted");
-            forEach(nodes, nodeId -> ws.sendMessage(flowId, status.append("nodeId", nodeId)));
-        } else {
-            // 无中断信息时，推送流程完成状态
-            ws.sendMessage(flowId, status);
-        }
+        // 手动停止后，通知流程完成（失败中断的节点不再逐个推送）
+        mqProducer.sendFlowStatus(flowId, Node.Status.FINISHED.name());
     }
 
     /** 清理流程运行的缓存数据 */
