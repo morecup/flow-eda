@@ -1,160 +1,92 @@
-# flow-eda
+# Flow EDA
 
-### 项目简介
+## 项目概览
 
-flow-eda 项目是一种基于事件驱动的流式低代码编程应用程序，它的主要功能是采用可视化编程，以拖拽节点、连接组合节点的形式来完成流程绘制，达到低代码开发和实现业务编程的目的。
+Flow EDA 是一套事件驱动的可视化流程编排平台，用户可以通过拖拽节点、连线和配置参数的方式构建自动化业务流。当前主分支基于 Spring Cloud + Nacos 的服务注册治理方案，移除了历史上的 OAuth2 模块与 WebSocket 推送，统一采用 HTTP/RabbitMQ 组合实现流程状态轮询与日志分发，以便在内网或本地环境更加轻量地部署与调试。
 
-此分支使用 Feign 替代了 Dubbo+Nacos 的技术方案，方便用户本地调试。使用此分支无需安装 Nacos，本地启动应用仅需要 Mysql 数据库和 RabbitMQ 服务即可，各服务之间采用 Feign 进行 http 调用。
+在线文档与功能说明请访问：<https://linxfeng.github.io/flow-eda>
 
-欢迎各路大神共同参与开发，项目持续扩展完善中
+## 系统架构
 
-#### 项目名称
+后端采用微服务分层，服务间通过 HTTP 与 RabbitMQ 交互：
 
-- **flow**: 流程图、流式编程
-- **eda**: 事件驱动应用程序 (Event Driven Application)
-- **flow-eda**: 一种基于事件驱动的流式低代码编程应用程序
+- **flow-eda-common**：公共依赖及通用配置（异常处理、工具类、Feign 基础配置等）。
+- **flow-eda-runner**：流程运行引擎，负责调度节点、维护流程上下文、输出实时状态及运行日志。
+- **flow-eda-web**：流程与节点管理服务，提供流程建模、节点类型元数据、运行监控、日志查询等接口。
+- **flow-eda-logger**：运行日志写入服务，将 Runner 推送的日志落盘，支持历史日志查询与轮询。
+- **flow-eda-gateway**：统一网关，聚合对外 REST 请求，并提供基础的请求包装与异常处理。
+- **flow-eda-vue**：Vue3 + Vite 构建的管理前端，负责流程编辑器、运行监控与日志可视化。
 
-### 项目文档
+RabbitMQ 用于在 Runner 与 Logger/Web 之间传递运行日志；MySQL 存储流程、节点、运行记录等业务数据；Nacos 作为服务注册中心，支持多服务协同部署。
 
-- 项目文档托管在 Github 上，网络较好的用户可查看 **[项目文档](https://linxfeng.github.io/flow-eda)**
-- 若访问不了 Github 或者访问较慢的用户可以查看 **[备用项目文档](http://120.48.9.40:91/)**
-- 若遇到问题，可以提 issue 或添加交流群，请先查看 **[常见问题汇总](https://linxfeng.github.io/flow-eda/#/issues/issues)**
+## 核心能力
 
-### 应用场景
+- 可视化流程建模：支持任意拖拽、连线、导入/导出，配置自定义参数与模板。
+- 丰富节点库：内置 HTTP、数据库、MQTT、定时、条件判断、子流程等节点，并支持按需扩展。
+- 并行执行引擎：自动识别多起点，支持阻塞与非阻塞节点混合，保证数据隔离。
+- 运行状态追踪：通过 REST 轮询获取流程状态、节点执行结果和异常信息。
+- 日志中心：运行日志异步写入，可在前端进行实时/历史检索与追踪。
+- 无登录版体验：默认关闭鉴权模块，开箱即用；如需企业级权限控制，可基于现有模块进行二次开发。
 
-- 自动化流程业务处理，例如需要处理某个数据，可以用拖拽节点定义这些流程，反复使用。
-- 支持多线程并发处理，任意组合、编排，可组合与或非等各种复杂的逻辑流程，支持阻塞、等待、周期性执行等。
-- 网络爬虫，例如需要爬取网络上的一些特定信息，然后加以处理，支持输出展示、存储到数据库或者发送邮件。
-- 定时任务，可以定时执行一些业务，周期性执行，可以指定次数或者不限制，支持 cron 表达式等。
-- 基础的增删改查业务模型，可支持自定义 HTTP 接口，支持 websocket、MQTT 等协议，支持常用的数据库操作。
-- 业务执行流程可视化，在流程运行时，可以在 web 页面上实时看到执行状态可执行信息，包括输入输出参数等。
+## 技术栈
 
-### 项目特点
+| 类别     | 组件与版本示例                             |
+| -------- | ------------------------------------------ |
+| 后端框架 | Spring Boot 2.6.x、Spring Cloud 2021.0.x   |
+| 注册配置 | Nacos 2.x                                  |
+| 消息队列 | RabbitMQ 3.x                               |
+| 数据访问 | MyBatis、PageHelper、HikariCP              |
+| 数据存储 | MySQL 8.x                                  |
+| 前端框架 | Vue 3、Vite、Pinia、Element Plus           |
+| 构建工具 | Maven 3.6+、Node.js 16+                    |
 
-- 整个流程运行引擎全都在后端实现，前端非常轻量，所有的数据、参数、包括输入框等数据全由后端配置提供，前端仅负责根据数据展示。后期开发仅扩展后端功能即可，前端无需更改，自动兼容。
-- 支持任意拖拽、组合、编排节点，形成业务流程，支持多线程处理，支持并行和串行流程。
-- 流程运行引擎做到模块化、配置化。后期在进行功能扩展和开发时，仅需要针对新增的功能，新增配置和新增模块功能代码即可，运行引擎自动适配。
-- 后端设计采用微服务架构，各个模块之间按业务功能相互解耦。便于后期二次开发和功能扩展。
-- 代码框架使用的技术栈丰富，使用了多种设计模式，值得学习。
-- 代码风格严格按照规范执行，后端代码遵循 Alibaba 规范，代码格式使用 google-java-format 格式化，前端代码使用 Prettier 格式化，消除代码中的标黄警告等，做到编码规范化。
+## 环境准备
 
-### 在线演示
+1. 安装 JDK 8、Maven 3.6+、Node.js 16+。
+2. 准备 MySQL、RabbitMQ、Nacos 服务（可使用本仓库提供的 `docker-compose.yml` 快速拉起 RabbitMQ 与 Nacos）。
+3. 在 MySQL 中执行 `flow-eda-common/sql` 目录的脚本：
+   - `nacos_config.sql`（供 Nacos 初始化配置使用）。
+   - `flow_eda.sql`（初始化业务库）。
 
-作者本人自费租了云服务器，搭建了在线演示 DEMO，开源不易，请多多支持，感谢！
+> 注意：旧版所需的 `flow_eda_oauth2.sql` 已不再使用。
 
-Vue3 版本[在线 DEMO](http://120.48.9.40:80)
+## 后端启动指南
 
-React 版本[在线 DEMO](http://120.48.9.40:90)
+1. 在项目根目录执行 `mvn clean package -DskipTests` 生成各模块可执行 JAR。
+2. 按顺序启动基础设施与服务（可在 IDE 内逐个运行，也可通过命令行执行）：
+   ```bash
+   # 启动 Logger（可选，负责日志入库）
+   java -jar flow-eda-logger/target/flow-eda-logger-0.0.1-SNAPSHOT.jar
 
-喜欢请点点 star，谢谢^.^
+   # 启动 Runner（流程调度引擎）
+   java -jar flow-eda-runner/target/flow-eda-runner-0.0.1-SNAPSHOT.jar
 
-### 代码仓库
+   # 启动 Web（流程管理服务）
+   java -jar flow-eda-web/target/flow-eda-web-0.0.1-SNAPSHOT.jar
 
-- [GitHub](https://github.com/Linxfeng/flow-eda)
-- [Gitee](https://gitee.com/Linxff/flow-eda)
+   # 可选：启动 Gateway 统一出口
+   java -jar flow-eda-gateway/target/flow-eda-gateway-0.0.1-SNAPSHOT.jar
+   ```
+3. 在 `application.yaml` 中根据自身环境调整 MySQL、RabbitMQ、Nacos 地址及凭据，避免使用示例中的测试密码。
 
-### 项目展示
+## 前端启动指南
 
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/flows.gif)
+```bash
+cd flow-eda-vue
+npm install
+npm run dev
+```
 
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/logs.gif)
+默认开发端口为 `5173`，可在 `vite.config.js` 中自定义代理。由于取消登录流程，直接访问前端页面即可体验全部功能；如需面向外部用户，建议在网关侧增加鉴权逻辑。
 
-**Vue3 版本界面：**
+## 常见问题
 
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/vue3.png)
+- **服务注册失败**：确认 Nacos 服务已启动，`NACOS_SERVER_ADDR` 环境变量配置正确。
+- **日志无法刷新**：确保 RabbitMQ 正常运行，`flow.log` 交换机与路由键与配置一致。
+- **流程执行异常**：查看前端运行日志或 `logs` 目录下 Logger 落盘文件，定位节点输入输出。
 
-**React 版本界面：**
+更多部署、节点扩展与二次开发指南，请参考 `docs` 目录或在线文档。
 
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/react.png)
+## 许可证
 
-**编辑器界面：**
-
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/editor.png)
-
-期待您的参与，项目持续扩展完善中...
-
-### 项目模块
-
-- **flow-eda-common** 公共工具模块
-- **flow-eda-runner** 流程运行引擎模块
-- **flow-eda-web** 后台管理 web 模块
-- **flow-eda-logger** 日志管理模块
-- **flow-eda-oauth2** 认证鉴权模块
-- **flow-eda-vue** 前端 vue 模块
-- **flow-eda-react** 前端 react 模块
-
-### 主要功能
-
-- 支持用户登录和注册，接口鉴权、数据隔离
-- 流程管理、日志管理。菜单简洁，便于用户使用
-- 支持绘制任意的流程图，没有繁琐的条件约束，仅针对某些节点的必填参数做了校验
-- 各功能节点地位平等，不分头尾，可任意连接绘制，连接数量无上限
-- 支持用户自定义参数，使用占位符${}即可获取参数值，由上至下可无限传递，可在任意位置取值
-- 支持在绘制流程图时使用常用快捷键对节点进行操作
-- 流程图支持导入/导出功能，可以快速的导入绘好的流程并进行修改
-- 可实时查看流程运行状态变化，便于用户了解流程运行至哪一步，以及各节点当前的状态、错误信息等
-- 支持查看流程实时运行日志功能，可查看实时运行日志和历史运行日志，内含各个节点的输入输出参数
-- 支持并发，流程采用并行运行的方式，会自动从流程中找出所有起始节点同时开始运行，数据隔离，互不干扰
-- 支持流程嵌套，可在流程中选择其他流程作为子流程运行
-- 提供了大量的流程图示例可供参考，每个功能节点都有对应的流程图示例
-
-更多功能，等着你发现！
-
-### 系统架构图
-
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/architecture.png)
-
-### 后端技术栈
-
-| 技术            | 版本     | 说明                 |
-| --------------- | -------- | -------------------- |
-| Docker          | 20.10.14 | 应用容器引擎         |
-| Docker Compose  | 2.5.0    | 应用容器部署工具     |
-| Spring Boot     | 2.6.4    | 微服务框架           |
-| Mybatis         | 3.5.9    | ORM 框架             |
-| Mysql           | 8.0.28   | 数据库               |
-| Maven           | 3.6.3    | 项目构建管理工具     |
-| PageHelper      | 5.3.0    | MyBatis 物理分页插件 |
-| Lombok          | 1.18.22  | 代码插件             |
-| Nacos           | 2.0.4    | 服务注册中心         |
-| Dubbo           | 3.0.7    | 服务远程调用         |
-| WebSocket       | 9.0.58   | 数据推送             |
-| RabbitMQ        | 3.9.15   | 消息队列             |
-| Spring Security | 5.6.2    | 认证和授权框架       |
-| Security Oauth2 | 2.3.6    | 认证和授权框架       |
-| Guava           | 31.0.1   | 限流组件             |
-
-### 发行版本
-
-- **v3.1.0** 🚀2022-10-31：新增 XML/HTML 等解析节点，新增 Email、PostgreSQL 等节点
-- **v3.0.0** 🚀2022-10-11：新增子流程相关节点，实现流程嵌套运行
-- **v2.2.0** 🚀2022-08-25：新增流程历史版本功能，新增接口防刷限流
-- **v2.1.0** 🚀2022-07-26：新增项目文档，完善流程示例，优化 HTTP 节点
-- **v2.0.0** 🚀2022-07-03：接入 Oauth2 鉴权认证，新增网络和数据库等功能节点
-- **v1.0.0** 🚀2022-05-24：已完成整体功能框架和基础功能节点
-
-### 版本计划
-
-- **v3.2.0** ：新增 token 管理，新增 IP 防火墙设置等功能
-- **v3.3.0** ：待补充需求...
-
-### 待完善项
-
-- [ ] 由于流程是并行运行，而且非阻塞节点运行速度很快，这就导致使用 websocket 在同一个 session 下推送消息会报错，目前采用的是加锁的形式避免问题，后期考虑使用 EMQX 替代 websocket 进行消息推送
-- [ ] 由于部署在线 demo 云服务器的资源限制（穷！），本项目全部线上部署目前占用总内存 4G 左右，导致很多中间件引入进来后服务器资源不够部署，后期考虑等服务器资源足够后，引入 redis 做分布式缓存，将 mysql 进行读写分离，引入 Prometheus+Grafana 实现项目监控，采用 k8s 部署等一系列优化（等买的起新的服务器再说-.-）
-
-### 交流群
-
-若需要技术支持或者想进行技术交流，可以扫码添加作者本人微信或者项目交流微信群，也可以进群提开发要求，我会尽可能进行扩展开发。欢迎加群进行技术交流！
-
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/weixin.jpg)
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/group.jpg)
-
-### 捐赠
-
-由于现有的服务器资源已经无法支撑后续开发的项目部署，如果你觉得此项目对您有帮助，可以进行捐赠，捐赠所得会全部用于项目开发，感谢！
-
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/wx.png)
-![image](https://gitee.com/Linxff/flow-eda/raw/master/docs/img/zfb.jpg)
-
-开源不易，感谢！
+本项目遵循 MIT License，详见根目录 `LICENSE` 文件。
