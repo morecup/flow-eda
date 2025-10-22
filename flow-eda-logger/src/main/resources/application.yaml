@@ -14,9 +14,3 @@ spring:
     port: 5672
     username: guest
     password: guest
-security:
-  oauth2:
-    resource-id: 
-    client-id: 
-    client-secret: 
-    check-token-url: 

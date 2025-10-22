@@ -16,9 +16,3 @@ spring:
     password: guest
     log_exchange: flow.log
     log_routing_key: flow.running.log
-security:
-  oauth2:
-    resource-id: 
-    client-id: 
-    client-secret: 
-    check-token-url: 
