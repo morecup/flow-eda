@@ -631,7 +631,7 @@ export default {
     const fetchLogContent = async () => {
       // 通过 web 透传接口获取日志内容
       const path = `/logs/running/${props.flowId}/${new Date().toISOString().slice(0,10)}.log`;
-      const res = await fetch(`/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+      const res = await fetch(`/flow-eda-web/api/v1/logs/content?path=${encodeURIComponent(path)}`);
       if (res.ok) {
         const text = await res.text();
         // 接口返回 Result<String> 时取 body 解析；此处简化为直接文本
@@ -654,7 +654,7 @@ export default {
     const flowStatus = ref("");
     let statusTimer;
     const pollStatus = async () => {
-      const res = await fetch(`/api/v1/feign/flow/status?flowId=${props.flowId}`);
+      const res = await fetch(`/flow-eda-web/api/v1/feign/flow/status?flowId=${props.flowId}`);
       if (res.ok) {
         const t = await res.text();
         try { const j = JSON.parse(t); flowStatus.value = j.result; }

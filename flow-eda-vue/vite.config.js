@@ -6,11 +6,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       // Web服务 API 请求通过网关
-      "^/api/v1": {
+      "^/flow-eda-web/api/v1": {
         target: `http://192.168.0.53:8090`,
         ws: true,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/v1/, '/flow-eda-web/api/v1'),
       },
       // 已移除 WS 代理
     },

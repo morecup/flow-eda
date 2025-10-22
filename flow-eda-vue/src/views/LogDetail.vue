@@ -46,7 +46,7 @@ export default {
     const getData = (path) => {
       clearInterval(timer);
       timer = setInterval(async () => {
-        const res = await fetch(`/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+        const res = await fetch(`/flow-eda-web/api/v1/logs/content?path=${encodeURIComponent(path)}`);
         if (res.ok) {
           const text = await res.text();
           try { const json = JSON.parse(text); logContent.value = json.result || ""; }

@@ -3,7 +3,7 @@ import request from '../utils/request';
 // 查询流程列表
 export function listFlow(params) {
     return request({
-        url: '/api/v1/flow',
+        url: '/flow-eda-web/api/v1/flow',
         method: 'get',
         params: params
     });
@@ -12,7 +12,7 @@ export function listFlow(params) {
 // 新增流程
 export function addFlow(body) {
     return request({
-        url: '/api/v1/flow',
+        url: '/flow-eda-web/api/v1/flow',
         method: 'post',
         data: body
     });
@@ -21,7 +21,7 @@ export function addFlow(body) {
 // 更新流程
 export function updateFlow(body) {
     return request({
-        url: '/api/v1/flow',
+        url: '/flow-eda-web/api/v1/flow',
         method: 'put',
         data: body
     });
@@ -30,7 +30,7 @@ export function updateFlow(body) {
 // 删除流程
 export function deleteFlow(body) {
     return request({
-        url: '/api/v1/flow',
+        url: '/flow-eda-web/api/v1/flow',
         method: 'delete',
         data: body
     });

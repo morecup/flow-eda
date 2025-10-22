@@ -3,7 +3,7 @@ import request from "../utils/request";
 // 获取节点数据
 export function getNodeData(params) {
   return request({
-    url: "/api/v1/node/data",
+    url: "/flow-eda-web/api/v1/node/data",
     method: "get",
     params: params,
   });
@@ -12,7 +12,7 @@ export function getNodeData(params) {
 // 更新节点数据
 export function setNodeData(body) {
   return request({
-    url: "/api/v1/node/data",
+    url: "/flow-eda-web/api/v1/node/data",
     method: "post",
     data: body,
   });
@@ -21,7 +21,7 @@ export function setNodeData(body) {
 // 获取流程数据版本
 export function getVersion(params) {
   return request({
-    url: "/api/v1/node/data/version",
+    url: "/flow-eda-web/api/v1/node/data/version",
     method: "get",
     params: params,
   });
@@ -30,7 +30,7 @@ export function getVersion(params) {
 // 保存流程数据版本
 export function saveVersion(version, body) {
   return request({
-    url: "/api/v1/node/data/version?version=" + version,
+    url: "/flow-eda-web/api/v1/node/data/version?version=" + version,
     method: "post",
     data: body,
   });
@@ -39,7 +39,7 @@ export function saveVersion(version, body) {
 // 运行本流程
 export function executeNodeData(flowId) {
   return request({
-    url: "/api/v1/node/data/run?flowId=" + flowId,
+    url: "/flow-eda-web/api/v1/node/data/run?flowId=" + flowId,
     method: "post",
   });
 }
@@ -47,7 +47,7 @@ export function executeNodeData(flowId) {
 // 停止本流程
 export function stopNodeData(flowId) {
   return request({
-    url: "/api/v1/node/data/stop?flowId=" + flowId,
+    url: "/flow-eda-web/api/v1/node/data/stop?flowId=" + flowId,
     method: "post",
   });
 }
