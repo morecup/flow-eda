@@ -150,14 +150,17 @@ public class FlowExecutor {
                     node -> flowStatusService.addRunningNode(flowId, node.getId()));
         }
         msg.append("nodeId", currentNode.getId());
+        String instanceId = Optional.ofNullable(currentNode.getParams())
+                .map(p -> p.getString("instanceId"))
+                .orElse(flowId);
         String flowStatus =
                 ApplicationContextUtil.getBean(FlowStatusService.class)
-                        .getFlowStatus(flowId, msg);
+                        .getFlowStatus(instanceId, msg);
         try {
             com.flow.eda.runner.status.FlowStatusMqProducer mq =
                     ApplicationContextUtil.getBean(
                             com.flow.eda.runner.status.FlowStatusMqProducer.class);
-            mq.sendFlowStatus(flowId, flowStatus);
+            mq.sendFlowStatus(instanceId, flowStatus);
         } catch (Exception ignored) {
             // 测试环境可忽略 MQ 发送
         }
