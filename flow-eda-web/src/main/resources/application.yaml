@@ -29,5 +29,6 @@ spring:
     log_routing_key: flow.operation.log
 mybatis:
   type-handlers-package: com.flow.eda.web.mybatis
+  mapper-locations: classpath:/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
