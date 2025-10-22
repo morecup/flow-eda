@@ -8,24 +8,32 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(
-        properties = {
-            "spring.datasource.url=jdbc:h2:mem:flow_instance;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE",
-            "spring.datasource.driver-class-name=org.h2.Driver",
-            "spring.datasource.username=sa",
-            "spring.datasource.password=",
-            "spring.datasource.hikari.maximum-pool-size=5",
-            "spring.datasource.hikari.minimum-idle=1",
-            "spring.cloud.nacos.discovery.enabled=false",
-            "spring.cloud.nacos.config.enabled=false",
-            "spring.rabbitmq.listener.simple.auto-startup=false",
-            "spring.rabbitmq.listener.direct.auto-startup=false"
-        })
+@SpringBootTest(classes = com.flow.eda.web.TestBootApplication.class)
+@MapperScan("com.flow.eda.web.flow.instance")
+@Import(FlowInstanceRepository.class)
+@TestPropertySource(properties = {
+        "spring.datasource.url=jdbc:h2:mem:flow_instance;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE",
+        "spring.datasource.driver-class-name=org.h2.Driver",
+        "spring.datasource.username=sa",
+        "spring.datasource.password=",
+        "spring.datasource.hikari.maximum-pool-size=5",
+        "spring.datasource.hikari.minimum-idle=1",
+        "spring.cloud.nacos.discovery.enabled=false",
+        "spring.cloud.nacos.config.enabled=false",
+        "spring.rabbitmq.listener.simple.auto-startup=false",
+        "spring.rabbitmq.listener.direct.auto-startup=false",
+        "mybatis.mapper-locations=classpath:/mapper/*.xml",
+        "mybatis.type-handlers-package="
+})
 @Transactional
 @Sql(scripts = "classpath:db/migration/V20251022__init_flow_instance_tables.sql")
 class FlowInstanceRepositoryTest {
