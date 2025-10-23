@@ -4,7 +4,7 @@ async function defaultRequest(config) {
 }
 
 export function createInstanceApi(req = defaultRequest) {
-  const base = '/flow-eda-web/api/flow/instances';
+  const base = '/flow-eda-runner/api/instances';
 
   async function startInstance(flowId, triggerUser = '') {
     return await req({
@@ -51,7 +51,14 @@ export function createInstanceApi(req = defaultRequest) {
     });
   }
 
-  return { startInstance, getInstance, pollInstanceStatus, getInstanceNodes, stopInstance };
+  async function getInstanceLogs(instanceId) {
+    return await req({
+      url: `${base}/${encodeURIComponent(instanceId)}/logs`,
+      method: 'get',
+    });
+  }
+
+  return { startInstance, getInstance, pollInstanceStatus, getInstanceNodes, getInstanceLogs, stopInstance };
 }
 
 // 可选：默认导出真实请求实现（保留命名导出，避免在 Node 测试中强制实例化）

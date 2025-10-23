@@ -3,12 +3,10 @@ package com.flow.eda.runner.runtime;
 import com.flow.eda.common.exception.FlowException;
 import com.flow.eda.common.model.FlowData;
 import com.flow.eda.runner.node.Node;
-import com.flow.eda.runner.logs.InstanceLogClient;
-import com.flow.eda.runner.logs.InstanceLogRecord;
-import com.flow.eda.runner.node.InstanceClient;
-import com.flow.eda.runner.node.InstanceNodeClient;
-import com.flow.eda.runner.node.InstanceNodeRecord;
-import com.flow.eda.runner.node.InstanceUpdateRequest;
+import com.flow.eda.runner.instance.FlowInstanceRepository;
+import com.flow.eda.runner.instance.FlowInstanceNodeDO;
+import com.flow.eda.runner.instance.FlowInstanceLogDO;
+import com.flow.eda.runner.instance.FlowInstanceDO;
 import com.flow.eda.runner.node.NodeTypeEnum;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.ApplicationContextUtil;
@@ -76,13 +74,16 @@ public class FlowExecutor {
                         info(flowId, "run [{}] node finished. output:{}", nodeName, p.toJson());
                         try {
                             // 追加实例日志（best-effort）
-                            InstanceLogClient client = ApplicationContextUtil.getBean(InstanceLogClient.class);
-                            InstanceLogRecord rec = new InstanceLogRecord();
-                            rec.setNodeId(currentNode.getId());
-                            rec.setLevel("INFO");
-                            rec.setCategory("NODE");
-                            rec.setMessage("run [" + nodeName + "] node finished. output:" + p.toJson());
-                            client.append(flowId, java.util.Collections.singletonList(rec));
+                            FlowInstanceRepository repository = ApplicationContextUtil.getBean(FlowInstanceRepository.class);
+                            FlowInstanceLogDO log = new FlowInstanceLogDO();
+                            log.setInstanceId(flowId);
+                            log.setNodeId(currentNode.getId());
+                            log.setLevel("INFO");
+                            log.setCategory("NODE");
+                            log.setMessage("run [" + nodeName + "] node finished. output:" + p.toJson());
+                            log.setLogTime(LocalDateTime.now());
+                            log.setCreatedAt(LocalDateTime.now());
+                            repository.saveLogs(java.util.Collections.singletonList(log));
                         } catch (Exception ignored) {}
                         runNext(currentNode, nodeInstance, p);
                     });
@@ -97,13 +98,16 @@ public class FlowExecutor {
             sendNodeStatus(currentNode, status.append("error", message));
             FlowLogs.error(flowId, "run [{}] node failed. error:{}", nodeName, message);
             try {
-                InstanceLogClient client = ApplicationContextUtil.getBean(InstanceLogClient.class);
-                InstanceLogRecord rec = new InstanceLogRecord();
-                rec.setNodeId(currentNode.getId());
-                rec.setLevel("ERROR");
-                rec.setCategory("NODE");
-                rec.setMessage("run [" + nodeName + "] node failed. error:" + message);
-                client.append(flowId, java.util.Collections.singletonList(rec));
+                FlowInstanceRepository repository = ApplicationContextUtil.getBean(FlowInstanceRepository.class);
+                FlowInstanceLogDO log = new FlowInstanceLogDO();
+                log.setInstanceId(flowId);
+                log.setNodeId(currentNode.getId());
+                log.setLevel("ERROR");
+                log.setCategory("NODE");
+                log.setMessage("run [" + nodeName + "] node failed. error:" + message);
+                log.setLogTime(LocalDateTime.now());
+                log.setCreatedAt(LocalDateTime.now());
+                repository.saveLogs(java.util.Collections.singletonList(log));
             } catch (Exception ignored) {}
         }
     }
@@ -194,36 +198,39 @@ public class FlowExecutor {
     /** 保存节点状态到数据库 */
     private void saveNodeStatus(FlowData currentNode, Document msg, String instanceId) {
         try {
-            InstanceNodeClient client = ApplicationContextUtil.getBean(InstanceNodeClient.class);
-            InstanceNodeRecord record = new InstanceNodeRecord();
-            record.setInstanceId(instanceId);
-            record.setNodeId(currentNode.getId());
-            record.setNodeName(currentNode.getNodeName());
-            record.setNodeType(currentNode.getType());
-            record.setStatus(msg.getString("status"));
+            FlowInstanceRepository repository = ApplicationContextUtil.getBean(FlowInstanceRepository.class);
+            FlowInstanceNodeDO node = new FlowInstanceNodeDO();
+            node.setInstanceId(instanceId);
+            node.setNodeId(currentNode.getId());
+            node.setNodeName(currentNode.getNodeName());
+            node.setNodeType(currentNode.getType());
+            node.setStatus(msg.getString("status"));
 
             // 设置输入输出
             if (currentNode.getParams() != null) {
-                record.setInputJson(currentNode.getParams().toJson());
+                node.setInputJson(currentNode.getParams().toJson());
             }
             if (msg.containsKey("output")) {
-                record.setOutputJson(msg.get("output", Document.class).toJson());
+                node.setOutputJson(msg.get("output", Document.class).toJson());
             }
 
             // 设置错误信息
             if (msg.containsKey("error")) {
-                record.setErrorStack(msg.getString("error"));
+                node.setErrorStack(msg.getString("error"));
             }
 
             // 设置时间
             if (Node.Status.RUNNING.name().equals(msg.getString("status"))) {
-                record.setStartTime(LocalDateTime.now());
+                node.setStartTime(LocalDateTime.now());
             } else if (Node.Status.FINISHED.name().equals(msg.getString("status"))
                     || Node.Status.FAILED.name().equals(msg.getString("status"))) {
-                record.setEndTime(LocalDateTime.now());
+                node.setEndTime(LocalDateTime.now());
             }
 
-            client.saveNode(instanceId, record);
+            node.setCreatedAt(LocalDateTime.now());
+            node.setUpdatedAt(LocalDateTime.now());
+
+            repository.saveNode(node);
         } catch (Exception e) {
             // Best-effort: 节点状态保存失败不影响流程执行
             FlowLogs.error(flowId, "save node status failed: {}", e.getMessage());
@@ -233,11 +240,13 @@ public class FlowExecutor {
     /** 更新实例状态到数据库 */
     private void updateInstanceStatus(String instanceId, String status) {
         try {
-            InstanceClient client = ApplicationContextUtil.getBean(InstanceClient.class);
-            InstanceUpdateRequest request = new InstanceUpdateRequest();
-            request.setStatus(status);
-            request.setEndTime(LocalDateTime.now());
-            client.updateInstance(instanceId, request);
+            FlowInstanceRepository repository = ApplicationContextUtil.getBean(FlowInstanceRepository.class);
+            FlowInstanceDO instance = repository.findInstanceById(instanceId)
+                    .orElseThrow(() -> new RuntimeException("Instance not found: " + instanceId));
+            instance.setStatus(status);
+            instance.setEndTime(LocalDateTime.now());
+            instance.setUpdatedAt(LocalDateTime.now());
+            repository.saveInstance(instance);
             FlowLogs.info(flowId, "instance [{}] finished with status: {}", instanceId, status);
         } catch (Exception e) {
             // Best-effort: 实例状态更新失败不影响流程执行
