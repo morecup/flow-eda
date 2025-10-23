@@ -36,18 +36,3 @@ export function saveVersion(version, body) {
   });
 }
 
-// 运行本流程
-export function executeNodeData(flowId) {
-  return request({
-    url: "/flow-eda-web/api/v1/node/data/run?flowId=" + flowId,
-    method: "post",
-  });
-}
-
-// 停止本流程
-export function stopNodeData(flowId) {
-  return request({
-    url: "/flow-eda-web/api/v1/node/data/stop?flowId=" + flowId,
-    method: "post",
-  });
-}

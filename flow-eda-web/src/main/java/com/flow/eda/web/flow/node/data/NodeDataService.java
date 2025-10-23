@@ -3,7 +3,6 @@ package com.flow.eda.web.flow.node.data;
 import com.flow.eda.common.exception.InvalidStateException;
 import com.flow.eda.common.model.FlowData;
 import com.flow.eda.common.utils.MergeBuilder;
-import com.flow.eda.web.flow.FlowService;
 import com.flow.eda.web.flow.node.type.NodeType;
 import com.flow.eda.web.flow.node.type.NodeTypeService;
 import org.bson.Document;
@@ -22,7 +21,6 @@ public class NodeDataService {
     @Autowired private FlowDataClient flowDataClient;
     @Autowired private NodeDataMapper nodeDataMapper;
     @Autowired private NodeTypeService nodeTypeService;
-    @Autowired private FlowService flowService;
 
     public List<NodeData> getNodeData(String flowId, @Nullable String version) {
         List<NodeData> list = nodeDataMapper.findByFlowId(flowId, version);
@@ -75,13 +73,6 @@ public class NodeDataService {
         List<FlowData> data = new ArrayList<>();
         list.forEach(n -> data.add(this.convert(n)));
         return data;
-    }
-
-    /** 停止运行当前流程 */
-    public void stopNodeData(String flowId) {
-        flowService.findById(flowId);
-        // 调用远程接口，停止运行当前流程
-        flowDataClient.stopFlowData(flowId);
     }
 
     private FlowData convert(NodeData nodeData) {

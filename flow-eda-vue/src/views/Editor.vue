@@ -112,7 +112,6 @@ import { jsPlumb } from "jsplumb";
 import { generateUniqueID } from "../utils/util.js";
 import { getNodeTypes } from "../api/nodeType.js";
 import {
-  executeNodeData,
   getNodeData,
   getVersion,
   saveVersion,
