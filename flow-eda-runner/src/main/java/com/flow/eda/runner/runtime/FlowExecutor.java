@@ -177,13 +177,6 @@ public class FlowExecutor {
         String flowStatus =
                 ApplicationContextUtil.getBean(FlowStatusService.class)
                         .getFlowStatus(instanceId, msg);
-        try {
-            com.flow.eda.runner.status.FlowStatusMqProducer mq =
-                    ApplicationContextUtil.getBean(
-                            com.flow.eda.runner.status.FlowStatusMqProducer.class);
-            mq.sendFlowStatus(instanceId, flowStatus);
-        } catch (Exception ignored) {
-            // 测试环境可忽略 MQ 发送
-        }
+        // MQ 已移除，状态计算仅用于内存管理
     }
 }

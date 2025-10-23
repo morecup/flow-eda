@@ -4,7 +4,6 @@ import com.flow.eda.common.model.FlowData;
 import com.flow.eda.common.utils.CollectionUtil;
 import com.flow.eda.runner.node.Node;
 import com.flow.eda.runner.node.NodeTypeEnum;
-import com.flow.eda.runner.status.FlowStatusMqProducer;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.FlowLogs;
 import org.bson.Document;
@@ -19,20 +18,27 @@ import static com.flow.eda.runner.runtime.FlowThreadPool.getThreadPool;
 
 @Service
 public class FlowDataRuntime {
-    @Autowired private FlowStatusMqProducer mqProducer;
     @Autowired private FlowStatusService flowStatusService;
 
     /** 运行流程 */
     public void runFlowData(List<FlowData> data) {
         String flowId =
                 Objects.requireNonNull(findFirst(data, n -> n.getFlowId() != null)).getFlowId();
+
+        // 尝试从节点参数中提取 instanceId，如果没有则使用 flowId
+        String instanceId = data.stream()
+                .filter(d -> d.getParams() != null && d.getParams().containsKey("instanceId"))
+                .findFirst()
+                .map(d -> d.getParams().getString("instanceId"))
+                .orElse(flowId);
+
         // 将流数据分为开始节点和定时器节点进行分别执行
         List<FlowData> starts = filter(data, this::isStartNode);
         // 获取作为起始节点的定时器节点
         List<FlowData> timers = filter(data, d -> isTimerNode(d) && isStart(d.getId(), data));
-        FlowLogs.info(flowId, "start running flow {}", flowId);
-        // 实时计算流程运行状态
-        flowStatusService.startRun(flowId, starts, timers);
+        FlowLogs.info(flowId, "start running flow [{}]", flowId);
+        // 实时计算流程运行状态，使用 instanceId 作为 key
+        flowStatusService.startRun(instanceId, starts, timers);
         // 异步执行
         forEach(
                 starts,
@@ -44,12 +50,11 @@ public class FlowDataRuntime {
 
     /** 停止流程 */
     public void stopFlowData(String flowId) {
-        FlowLogs.info(flowId, "stop flow {}", flowId);
+        FlowLogs.info(flowId, "stop flow [{}]", flowId);
         FlowThreadPool.shutdownThreadPool(flowId);
         FlowThreadPool.shutdownSchedulerPool(flowId);
         FlowBlockNodePool.shutdownBlockNode(flowId);
-        // 手动停止后，通知流程完成（失败中断的节点不再逐个推送）
-        mqProducer.sendFlowStatus(flowId, Node.Status.FINISHED.name());
+        // MQ 已移除
     }
 
     /** 清理流程运行的缓存数据 */

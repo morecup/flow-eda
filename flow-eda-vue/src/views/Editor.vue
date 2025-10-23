@@ -660,19 +660,10 @@ export default {
       }
     };
 
-    // 轮询获取流程状态
+    // 流程实例状态（只在执行时轮询实例状态）
     const flowStatus = ref("");
-    let statusTimer;
     let instancePollTimer;
     const currentInstanceId = ref("");
-    const pollStatus = async () => {
-      const res = await fetch(`/flow-eda-web/api/v1/feign/flow/status?flowId=${props.flowId}`);
-      if (res.ok) {
-        const t = await res.text();
-        try { const j = JSON.parse(t); flowStatus.value = j.result; }
-        catch { flowStatus.value = t; }
-      }
-    };
 
     // 获取版本列表
     const versions = ref(["当前最新版本"]);
@@ -804,23 +795,19 @@ export default {
       clearInterval(instancePollTimer);
     };
 
-    // 初始化页面数据，渲染流程图
+    // 初始化页面数据,渲染流程图
     onMounted(async () => {
       await initNodeType();
       await initNode(null);
       await nextTick(() => {
         init();
       });
-      // 启动轮询
-      clearInterval(statusTimer);
-      statusTimer = setInterval(pollStatus, 1000);
       // 获取版本列表
       await getVersions();
     });
 
-    // 组件被销毁之前，关闭socket连接
+    // 组件被销毁之前，清理定时器
     onBeforeUnmount(() => {
-      clearInterval(statusTimer);
       clearInterval(logTimer);
       clearInterval(instancePollTimer);
       jsPlumbInstance.reset();

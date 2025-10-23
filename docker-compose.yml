@@ -12,19 +12,20 @@ services:
   #     - /root/app/mysql/data/:/var/lib/mysql
   #     - /root/app/mysql/conf.d:/etc/mysql/conf.d
   #     - /root/app/mysql/my.cnf:/etc/mysql/my.cnf
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - /root/app/rabbitmq/data:/var/lib/rabbitmq
+  # rabbitmq:
+  #   image: rabbitmq:management
+  #   container_name: rabbitmq
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   volumes:
+  #     - /root/app/rabbitmq/data:/var/lib/rabbitmq
   nacos:
     image: nacos/nacos-server
     container_name: nacos
     ports:
       - "8848:8848"
+      - "9090:8080"
       - "9848:9848"
       - "9849:9849"
     environment:

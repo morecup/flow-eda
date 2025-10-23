@@ -36,16 +36,25 @@ public class FlowStatusService {
             return flowStatusClient.getFlowStatus(flowId).getResult();
         }
         String status = message.getString("status");
+
+        // 防御性检查：如果 flowId 不在 runningMap 中，先初始化
+        Set<String> runningNodes = runningMap.get(flowId);
+        if (runningNodes == null) {
+            // 可能是用 instanceId 调用，但 map 中用的是 flowId
+            // 或者流程已经清理，此时直接返回当前状态
+            return status != null ? status : Node.Status.RUNNING.name();
+        }
+
         if (Node.Status.FAILED.name().equals(status)) {
-            runningMap.get(flowId).remove(nodeId);
+            runningNodes.remove(nodeId);
             return status;
         } else if (Node.Status.FINISHED.name().equals(status)) {
-            runningMap.get(flowId).remove(nodeId);
-            if (runningMap.get(flowId).isEmpty()) {
+            runningNodes.remove(nodeId);
+            if (runningNodes.isEmpty()) {
                 return status;
             }
         } else {
-            runningMap.get(flowId).add(nodeId);
+            runningNodes.add(nodeId);
         }
         return Node.Status.RUNNING.name();
     }

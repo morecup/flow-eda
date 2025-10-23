@@ -20,13 +20,6 @@ spring:
       connection-timeout: 30000
       minimum-idle: 5
       maximum-pool-size: 20
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    log_exchange: flow.log
-    log_routing_key: flow.operation.log
 mybatis:
   type-handlers-package: com.flow.eda.web.mybatis
   mapper-locations: classpath:/mapper/*.xml

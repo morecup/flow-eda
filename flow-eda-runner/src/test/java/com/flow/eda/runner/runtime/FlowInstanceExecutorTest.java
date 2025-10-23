@@ -1,7 +1,6 @@
 package com.flow.eda.runner.runtime;
 
 import com.flow.eda.common.model.FlowData;
-import com.flow.eda.runner.status.FlowStatusMqProducer;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.ApplicationContextUtil;
 import org.bson.Document;
@@ -24,21 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FlowInstanceExecutorTest {
 
     private FlowStatusService statusService;
-    private FlowStatusMqProducer mqProducer;
 
     @BeforeEach
     void setupContext() {
         StaticApplicationContext context = new StaticApplicationContext();
         statusService = Mockito.mock(FlowStatusService.class);
-        // 使用假的实现，避免对 RabbitTemplate 的类加载
-        mqProducer = new FlowStatusMqProducer() {
-            @Override
-            public void sendFlowStatus(String flowId, String status) {
-                // no-op
-            }
-        };
         context.getBeanFactory().registerSingleton("flowStatusService", statusService);
-        context.getBeanFactory().registerSingleton("flowStatusMqProducer", mqProducer);
         ApplicationContextUtil.setApplicationContext(context);
 
         Mockito.when(statusService.getFlowStatus(Mockito.anyString(), Mockito.any(Document.class)))
@@ -72,5 +62,3 @@ public class FlowInstanceExecutorTest {
                 "节点参数应包含 instanceId");
     }
 }
-
-
