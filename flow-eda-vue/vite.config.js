@@ -3,7 +3,9 @@ import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
   server: {
+    host: '0.0.0.0',
     port: 3000,
+    cors: true,
     proxy: {
       // Web服务 API 请求通过网关
       "^/flow-eda-web/api": {
