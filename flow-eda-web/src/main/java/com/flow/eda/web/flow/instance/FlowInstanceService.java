@@ -4,7 +4,7 @@ import com.flow.eda.common.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,6 +33,20 @@ public class FlowInstanceService {
     public FlowInstanceDO getInstance(String instanceId) {
         return repository.findInstanceById(instanceId)
                 .orElseThrow(() -> new ResourceNotFoundException("instance not found: " + instanceId));
+    }
+
+    public List<FlowInstanceLogDO> getInstanceLogs(String instanceId) {
+        // 确保实例存在
+        getInstance(instanceId);
+        return repository.findLogsByInstanceId(instanceId);
+    }
+
+    public void appendLogs(String instanceId, List<FlowInstanceLogDO> logs) {
+        // 确保实例存在
+        getInstance(instanceId);
+        if (logs == null || logs.isEmpty()) return;
+        logs.forEach(l -> l.setInstanceId(instanceId));
+        repository.saveLogs(logs);
     }
 }
 

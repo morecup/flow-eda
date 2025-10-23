@@ -20,13 +20,7 @@ spring:
             - Path=/flow-eda-web/**
           filters:
             - StripPrefix=1
-        # Logger服务路由
-        - id: flow-eda-logger
-          uri: lb://flow-eda-logger
-          predicates:
-            - Path=/flow-eda-logger/**
-          filters:
-            - StripPrefix=1
+        # Logger服务路由已下线（改为实例日志，存数据库，前端从 web 查询）
         # Runner服务路由
         - id: flow-eda-runner
           uri: lb://flow-eda-runner

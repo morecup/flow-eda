@@ -29,7 +29,6 @@
 
 ```shell
 nohup java -jar flow-eda-oauth2-0.0.1-SNAPSHOT.jar >oauth2.log 2>&1 &
-nohup java -jar flow-eda-logger-0.0.1-SNAPSHOT.jar >logger.log 2>&1 &
 nohup java -jar flow-eda-web-0.0.1-SNAPSHOT.jar >web.log 2>&1 &
 nohup java -jar flow-eda-runner-0.0.1-SNAPSHOT.jar >runner.log 2>&1 &
 ```

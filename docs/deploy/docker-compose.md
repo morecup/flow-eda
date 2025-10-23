@@ -65,12 +65,6 @@ services:
     image: flow-eda-oauth2
     container_name: oauth2
     network_mode: host
-  logger:
-    image: flow-eda-logger
-    container_name: logger
-    network_mode: host
-    volumes:
-      - /root/app/springboot/logger/logs:/logs
   runner:
     image: flow-eda-runner
     container_name: runner

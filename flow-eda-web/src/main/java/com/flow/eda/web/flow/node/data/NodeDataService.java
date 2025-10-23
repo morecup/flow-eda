@@ -55,6 +55,18 @@ public class NodeDataService {
         flowDataClient.runFlowData(this.queryNodeData(flowId));
     }
 
+    public void runNodeData(String flowId, String instanceId) {
+        List<FlowData> data = this.queryNodeData(flowId);
+        // 将 instanceId 透传至 Runner
+        for (FlowData d : data) {
+            org.bson.Document params = d.getParams();
+            if (params == null) params = new org.bson.Document();
+            params.put("instanceId", instanceId);
+            d.setParams(params);
+        }
+        flowDataClient.runFlowData(data);
+    }
+
     public List<FlowData> queryNodeData(String flowId) {
         List<NodeData> list = this.getNodeData(flowId, null);
         if (isEmpty(list)) {

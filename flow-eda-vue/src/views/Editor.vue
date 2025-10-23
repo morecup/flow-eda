@@ -625,19 +625,28 @@ export default {
       ElMessage.success("加载成功！");
     };
 
-    // 展示/关闭流程实时运行日志
+    // 展示/关闭流程实例实时运行日志（实例维度，DB）
     const logVisible = ref(false);
     let logContent = ref("");
     let logTimer;
     const fetchLogContent = async () => {
-      // 通过 web 透传接口获取日志内容
-      const path = `/logs/running/${props.flowId}/${new Date().toISOString().slice(0,10)}.log`;
-      const res = await fetch(`/flow-eda-web/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+      if (!currentInstanceId.value) return;
+      const res = await fetch(`/flow-eda-web/api/flow/instances/${encodeURIComponent(currentInstanceId.value)}/logs`);
       if (res.ok) {
         const text = await res.text();
-        // 接口返回 Result<String> 时取 body 解析；此处简化为直接文本
-        try { const json = JSON.parse(text); logContent.value = json.result || ""; }
-        catch { logContent.value = text; }
+        try {
+          const json = JSON.parse(text);
+          // 简单拼接 message 字段
+          if (Array.isArray(json)) {
+            logContent.value = json.map(i => i.message || "").join("\n");
+          } else if (Array.isArray(json.result)) {
+            logContent.value = json.result.map(i => i.message || "").join("\n");
+          } else {
+            logContent.value = "";
+          }
+        } catch {
+          logContent.value = text;
+        }
       }
     };
     const showLogs = (show) => {
@@ -754,34 +763,34 @@ export default {
       });
       // 先保存流程
       const save = await saveData(null);
-      if (save) {
-        // 创建运行实例并开始轮询状态
-        try {
-          const res = await instanceApi.startInstance(props.flowId, "");
-          if (res && res.instanceId) {
-            currentInstanceId.value = res.instanceId;
-            flowStatus.value = "RUNNING";
-            ElMessage.success("已启动实例:" + res.instanceId);
-            clearInterval(instancePollTimer);
-            instancePollTimer = setInterval(async () => {
-              try {
-                const detail = await instanceApi.getInstance(currentInstanceId.value);
-                if (detail && detail.status) {
-                  flowStatus.value = detail.status;
-                  if (detail.status === "FINISHED" || detail.status === "FAILED") {
-                    clearInterval(instancePollTimer);
-                  }
-                }
-              } catch (e) {
-                // 忽略短暂错误，继续轮询
-              }
-            }, 1000);
-          } else {
-            ElMessage.error("启动实例失败");
-          }
-        } catch (e) {
+      if (!save) return;
+      try {
+        const res = await instanceApi.startInstance(props.flowId, "");
+        if (!res || !res.instanceId) {
           ElMessage.error("启动实例失败");
+          return;
         }
+        currentInstanceId.value = res.instanceId;
+        flowStatus.value = "RUNNING";
+        ElMessage.success("已启动实例:" + res.instanceId);
+        // 触发 Runner 执行并透传 instanceId（后端 NodeDataService 支持可选 instanceId）
+        await fetch(`/flow-eda-web/api/v1/node/data/run?flowId=${encodeURIComponent(props.flowId)}&instanceId=${encodeURIComponent(res.instanceId)}`, { method: 'POST' });
+        clearInterval(instancePollTimer);
+        instancePollTimer = setInterval(async () => {
+          try {
+            const detail = await instanceApi.getInstance(currentInstanceId.value);
+            if (detail && detail.status) {
+              flowStatus.value = detail.status;
+              if (detail.status === "FINISHED" || detail.status === "FAILED") {
+                clearInterval(instancePollTimer);
+              }
+            }
+          } catch (e) {
+            // 忽略短暂错误
+          }
+        }, 1000);
+      } catch (e) {
+        ElMessage.error("启动实例失败");
       }
     };
 

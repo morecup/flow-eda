@@ -44,7 +44,7 @@ const routes = [
           title: "日志详情",
         },
         component: LogDetail,
-        props: (route) => ({ path: route.query.path }),
+        props: (route) => ({ instanceId: route.query.instanceId }),
       },
     ],
   },

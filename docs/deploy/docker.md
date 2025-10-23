@@ -108,8 +108,7 @@ docker run -d -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_SE
 
 我们可以将项目的 jar 包打包成 docker 镜像，便于进行 docker 部署。项目的 jar 包来源详见[项目打包](deploy/packaging.md)。
 
-我们在`/root/app/`目录下新建一个`springboot`目录，在 springboot 目录下新建一个`logger`目录，
-在 logger 目录下新建一个`logs`目录，用于存放项目的日志文件。
+我们在`/root/app/`目录下新建一个`springboot`目录（仅用于存放后端 jar 包）。
 
 ```shell
 cd /root/app
@@ -157,8 +156,6 @@ docker images
 也可以直接执行以下命令：
 
 ```shell
-docker run -d -p 8086:8086 flow-eda-oauth2
-docker run -d -p 8082:8082 -v /root/app/springboot/logger/logs:/logs flow-eda-logger
 docker run -d -p 8088:8088 flow-eda-runner
 docker run -d -p 8081:8081 flow-eda-web
 ```

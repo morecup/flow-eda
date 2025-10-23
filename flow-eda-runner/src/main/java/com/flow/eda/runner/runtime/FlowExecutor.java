@@ -3,6 +3,8 @@ package com.flow.eda.runner.runtime;
 import com.flow.eda.common.exception.FlowException;
 import com.flow.eda.common.model.FlowData;
 import com.flow.eda.runner.node.Node;
+import com.flow.eda.runner.logs.InstanceLogClient;
+import com.flow.eda.runner.logs.InstanceLogRecord;
 import com.flow.eda.runner.node.NodeTypeEnum;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.ApplicationContextUtil;
@@ -67,6 +69,16 @@ public class FlowExecutor {
             nodeInstance.run(
                     (p) -> {
                         info(flowId, "run [{}] node finished. output:{}", nodeName, p.toJson());
+                        try {
+                            // 追加实例日志（best-effort）
+                            InstanceLogClient client = ApplicationContextUtil.getBean(InstanceLogClient.class);
+                            InstanceLogRecord rec = new InstanceLogRecord();
+                            rec.setNodeId(currentNode.getId());
+                            rec.setLevel("INFO");
+                            rec.setCategory("NODE");
+                            rec.setMessage("run [" + nodeName + "] node finished. output:" + p.toJson());
+                            client.append(flowId, java.util.Collections.singletonList(rec));
+                        } catch (Exception ignored) {}
                         runNext(currentNode, nodeInstance, p);
                     });
         } catch (Exception e) {
@@ -79,6 +91,15 @@ public class FlowExecutor {
             Document status = new Document("status", Node.Status.FAILED.name());
             sendNodeStatus(currentNode, status.append("error", message));
             FlowLogs.error(flowId, "run [{}] node failed. error:{}", nodeName, message);
+            try {
+                InstanceLogClient client = ApplicationContextUtil.getBean(InstanceLogClient.class);
+                InstanceLogRecord rec = new InstanceLogRecord();
+                rec.setNodeId(currentNode.getId());
+                rec.setLevel("ERROR");
+                rec.setCategory("NODE");
+                rec.setMessage("run [" + nodeName + "] node failed. error:" + message);
+                client.append(flowId, java.util.Collections.singletonList(rec));
+            } catch (Exception ignored) {}
         }
     }
 

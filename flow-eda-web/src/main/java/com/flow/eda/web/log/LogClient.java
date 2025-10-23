@@ -1,36 +1,8 @@
 package com.flow.eda.web.log;
 
-import com.flow.eda.common.http.Result;
-import com.flow.eda.common.model.Logs;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-
-/** 日志服务接口 */
-@FeignClient(name = "flow-eda-logger")
-public interface LogClient {
-    /**
-     * 获取日志信息列表
-     *
-     * @param type 日志类型
-     * @return 日志信息列表
-     */
-    @GetMapping("/api/v1/feign/logs")
-    Result<List<Logs>> getLogList(@RequestParam String type);
-
-    /**
-     * 删除日志文件
-     *
-     * @param path 日志文件路径
-     */
-    @DeleteMapping("/api/v1/feign/logs")
-    void deleteLogFiles(@RequestBody List<String> path);
-
-    /** 读取日志内容 */
-    @GetMapping("/api/v1/feign/logs/content")
-    Result<String> getLogContent(@RequestParam String path);
-}
+/**
+ * Logger 模块已下线：该占位文件保留以避免历史引用报错。
+ * 请改用实例日志 API。
+ */
+@Deprecated
+public interface LogClient {}

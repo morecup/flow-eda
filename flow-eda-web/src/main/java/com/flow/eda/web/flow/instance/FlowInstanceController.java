@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/flow/instances")
@@ -34,6 +35,17 @@ public class FlowInstanceController {
         body.put("instanceId", instance.getId());
         body.put("status", instance.getStatus());
         return body;
+    }
+
+    @GetMapping("/{id}/logs")
+    public List<FlowInstanceLogDO> logs(@PathVariable("id") String id) {
+        return service.getInstanceLogs(id);
+    }
+
+    @PostMapping("/{id}/logs")
+    public ResponseEntity<Void> appendLogs(@PathVariable("id") String id, @RequestBody List<FlowInstanceLogDO> logs) {
+        service.appendLogs(id, logs);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 

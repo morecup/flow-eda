@@ -9,10 +9,4 @@ spring:
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
         namespace: ${NACOS_NAMESPACE:public}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    log_exchange: flow.log
-    log_routing_key: flow.running.log
+  # logger 下线，移除 rabbitmq 日志推送配置

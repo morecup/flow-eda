@@ -23,7 +23,7 @@ import { onBeforeUnmount, ref, watch } from "vue";
 export default {
   name: "LogDetail",
   props: {
-    path: String,
+    instanceId: String,
   },
   components: {
     Codemirror,
@@ -32,31 +32,32 @@ export default {
     const logContent = ref("");
 
     // 监听参数变化，加载新数据，关闭旧连接
-    watch(
-      () => props.path,
-      (n, o) => {
-        if (n && n !== o) {
-          getData(n);
-        }
-      }
-    );
+    watch(() => props.instanceId, (n, o) => { if (n && n !== o) { getData(n); } });
 
     // 获取日志内容
     let timer;
-    const getData = (path) => {
+    const getData = (instanceId) => {
       clearInterval(timer);
       timer = setInterval(async () => {
-        const res = await fetch(`/flow-eda-web/api/v1/logs/content?path=${encodeURIComponent(path)}`);
+        const res = await fetch(`/flow-eda-web/api/flow/instances/${encodeURIComponent(instanceId)}/logs`);
         if (res.ok) {
           const text = await res.text();
-          try { const json = JSON.parse(text); logContent.value = json.result || ""; }
-          catch { logContent.value = text; }
+          try {
+            const json = JSON.parse(text);
+            if (Array.isArray(json)) {
+              logContent.value = json.map(i => i.message || "").join("\n");
+            } else if (Array.isArray(json.result)) {
+              logContent.value = json.result.map(i => i.message || "").join("\n");
+            } else {
+              logContent.value = "";
+            }
+          } catch { logContent.value = text; }
         }
       }, 2000);
     };
 
     // 初始加载
-    getData(props.path);
+    getData(props.instanceId);
 
     // 组件被销毁之前，关闭socket连接
     onBeforeUnmount(() => {

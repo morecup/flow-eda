@@ -663,10 +663,10 @@ gh issue create \
 
 ### 2. 主干与主题分支策略
 
-- **`dev-base-gh` 分支**: 永远是可部署的、稳定的生产代码。
+- **`dev-base` 分支**: 永远是可部署的、稳定的生产代码。
 - **主题分支 (Topic Branches)**: **所有开发工作**都在主题分支上进行。
     - **命名规范**: `feature/issueId-short-description` 或 `fix/issueId-bug-summary`。
-    - **生命周期**: 从 `dev-base-gh` 创建 → 开发 → PR合并 → **立即删除**。
+    - **生命周期**: 从 `dev-base` 创建 → 开发 → PR合并 → **立即删除**。
 
 ### 3. 标准开发循环
 
@@ -676,7 +676,7 @@ gh issue create \
 2.  **创建分支**：`git checkout -b feature/42-user-auth`。
 3.  **🔴 测试先行**：根据验收标准编写失败的测试用例，遵循 TDD 原则。
 4.  **开发与提交**：编写代码让测试通过，遵循代码规范，频繁本地提交。
-5.  **准备审查**：`git pull --rebase origin dev-base-gh` 同步主干，解决冲突。
+5.  **准备审查**：`git pull --rebase origin dev-base` 同步主干，解决冲突。
 6.  **🔴 发起 PR**：`git push --force-with-lease`。
 7.  **🔴 编译和测试检查**：确保编译成功且所有测试通过，如失败则修复后重新检查。
 8.  **🔴 合并代码**：检查通过后，使用 **"Create a merge commit"** 选项合并。
@@ -696,7 +696,7 @@ gh issue create \
 
 #### 4.1 合并冲突处理
 
-当 `git pull --rebase origin dev-base-gh` 提示冲突时：
+当 `git pull --rebase origin dev-base` 提示冲突时：
 
 1.  打开冲突文件，手动解决（删除 `<<<<<<<`, `=======`, `>>>>>>>` 标记）。
 2.  标记冲突已解决: `git add <conflicted-file>`。
@@ -705,7 +705,7 @@ gh issue create \
 
 #### 4.2 Hotfix 紧急修复流程
 
-**场景：** 生产环境 v0.2.0 发现严重 bug，而 dev-base-gh 分支已有 v0.3.0 的新功能。
+**场景：** 生产环境 v0.2.0 发现严重 bug，而 dev-base 分支已有 v0.3.0 的新功能。
 
 ```mermaid
 flowchart LR
@@ -713,7 +713,7 @@ flowchart LR
 CheckoutTag --> FixBug[修复bug<br/>+ 添加测试]
 FixBug --> TestFix[本地测试验证]
 TestFix --> ReleaseHotfix[发布patch版本<br/>v0.2.1]
-ReleaseHotfix --> CheckMain{⚠️ dev-base-gh分支<br/>是否重构相关代码?}
+ReleaseHotfix --> CheckMain{⚠️ dev-base分支<br/>是否重构相关代码?}
 
 CheckMain -->|情况A: 未重构| MergeCommit[使用 merge --no-ff<br/>保留完整上下文]
 CheckMain -->|情况B: 已重构<br/>会产生大量冲突| CherryPick[使用 cherry-pick<br/>只提取bug修复commit]
@@ -731,7 +731,7 @@ style DeleteBranch fill:#51cf66,stroke:#2f9e44,stroke-width:2px
 1.  从**release tag**创建 hotfix 分支：`git checkout -b hotfix/0.2.1 v0.2.0`。
 2.  修复 bug 并提交。
 3.  发布 patch 版本（如 `v0.2.1`）。
-4.  **将 hotfix 分支合并回 `dev-base-gh` 分支**（根据代码是否重构选择 `merge` 或 `cherry-pick`），防止 bug 在未来版本中重现。
+4.  **将 hotfix 分支合并回 `dev-base` 分支**（根据代码是否重构选择 `merge` 或 `cherry-pick`），防止 bug 在未来版本中重现。
 5.  删除 hotfix 分支。
 
 **如何选择 merge vs cherry-pick？**
@@ -741,7 +741,7 @@ style DeleteBranch fill:#51cf66,stroke:#2f9e44,stroke-width:2px
 1. 创建临时分支测试合并：
 
    ```bash
-   git checkout -b test-merge dev-base-gh
+   git checkout -b test-merge dev-base
    git merge hotfix/0.2.1
    ```
 
@@ -757,7 +757,7 @@ style DeleteBranch fill:#51cf66,stroke:#2f9e44,stroke-width:2px
     - **>5 个冲突** → 使用 `git cherry-pick <commit-hash>`（避免大量冲突解决）
     - **3-5 个冲突** → 评估冲突复杂度，优先使用 merge
 
-4. 清理临时分支：`git checkout dev-base-gh && git branch -D test-merge`
+4. 清理临时分支：`git checkout dev-base && git branch -D test-merge`
 
 
 
@@ -969,7 +969,7 @@ gh issue list --milestone "v1.0.0 - 示例版本"
 gh issue view 123
 
 # Pull Request 管理
-gh pr create --title "标题" --body "内容" --base dev-base-gh
+gh pr create --title "标题" --body "内容" --base dev-base
 gh pr list
 gh pr view 123
 gh pr merge 123
