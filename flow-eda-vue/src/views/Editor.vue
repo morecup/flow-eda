@@ -773,10 +773,24 @@ export default {
           try {
             const detail = await instanceApi.getInstance(currentInstanceId.value);
             if (detail && detail.status) {
+              const previousStatus = flowStatus.value;
               flowStatus.value = detail.status;
-              if (detail.status === "FINISHED" || detail.status === "FAILED") {
+
+              // 如果实例已完成、失败或停止，停止轮询并提示
+              if (detail.status === "FINISHED" || detail.status === "FAILED" || detail.status === "STOPPED") {
                 clearInterval(instancePollTimer);
                 clearInterval(nodePollTimer);
+
+                // 只有状态发生变化时才显示提示
+                if (previousStatus !== detail.status) {
+                  if (detail.status === "FINISHED") {
+                    ElMessage.success("实例执行完成");
+                  } else if (detail.status === "FAILED") {
+                    ElMessage.error("实例执行失败");
+                  } else if (detail.status === "STOPPED") {
+                    ElMessage.success("实例已成功停止");
+                  }
+                }
               }
             }
           } catch (e) {
