@@ -11,9 +11,11 @@ import java.util.UUID;
 public class FlowInstanceService {
 
     private final FlowInstanceRepository repository;
+    private final RunnerClient runnerClient;
 
-    public FlowInstanceService(FlowInstanceRepository repository) {
+    public FlowInstanceService(FlowInstanceRepository repository, RunnerClient runnerClient) {
         this.repository = repository;
+        this.runnerClient = runnerClient;
     }
 
     public String startInstance(String flowId, String triggerUser) {
@@ -75,6 +77,16 @@ public class FlowInstanceService {
 
     public void stopInstance(String instanceId) {
         FlowInstanceDO instance = getInstance(instanceId);
+
+        // 先调用 Runner 停止执行
+        try {
+            runnerClient.stopInstance(instanceId);
+        } catch (Exception e) {
+            // Best-effort: Runner 停止失败不影响数据库状态更新
+            // 可能 Runner 已经执行完成或者实例不存在
+        }
+
+        // 更新数据库状态
         instance.setStatus("STOPPED");
         instance.setEndTime(LocalDateTime.now());
         instance.setUpdatedAt(LocalDateTime.now());
