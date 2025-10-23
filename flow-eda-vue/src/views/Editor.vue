@@ -662,8 +662,11 @@ export default {
     const flowStatus = ref("");
     let instancePollTimer;
     let nodePollTimer;
+    let stopTimeoutTimer;
     const currentInstanceId = ref("");
     const instanceNodes = ref([]);
+    const isStoppingInstance = ref(false);
+    const stopStartTime = ref(0);
 
     // 获取版本列表
     const versions = ref(["当前最新版本"]);
