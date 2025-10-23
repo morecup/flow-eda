@@ -11,4 +11,31 @@ spring:
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
         namespace: ${NACOS_NAMESPACE:public}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
-  # logger 下线，移除 rabbitmq 日志推送配置
+
+  # 数据库配置 - 连接到 Web 的数据库
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.5:33307/flow_eda?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 'ljzh@2003'
+    hikari:
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      minimum-idle: 5
+      maximum-pool-size: 20
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# Flyway 配置
+# 注意：Instance 表已经在 Web 数据库中创建，这里禁用 Flyway 避免冲突
+# 如果是全新数据库，可以启用 Flyway
+# flyway:
+#   enabled: true
+#   locations: classpath:db/migration
+#   baseline-on-migrate: true
+
