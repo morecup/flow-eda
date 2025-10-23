@@ -111,4 +111,19 @@ public class FlowStatusService {
     public void registerNotice(String flowId, Consumer<String> consumer) {
         noticeMap.put(flowId, consumer);
     }
+
+    /**
+     * 停止指定实例的执行.
+     * 清理运行状态并关闭线程池.
+     *
+     * @param instanceId 实例id
+     */
+    public void stopInstance(String instanceId) {
+        // 清理运行中的节点
+        runningMap.remove(instanceId);
+        // 清理通知
+        noticeMap.remove(instanceId);
+        // 关闭并移除线程池
+        com.flow.eda.runner.runtime.FlowThreadPool.removeThreadPool(instanceId);
+    }
 }

@@ -54,4 +54,16 @@ public class FlowThreadPool {
             SCHEDULER_POOL_MAP.remove(flowId);
         }
     }
+
+    /**
+     * 移除并关闭指定流程/实例的所有线程池
+     *
+     * @param instanceId 实例id
+     */
+    public static void removeThreadPool(String instanceId) {
+        // 关闭普通线程池
+        shutdownThreadPool(instanceId);
+        // 关闭定时任务线程池
+        shutdownSchedulerPool(instanceId);
+    }
 }
