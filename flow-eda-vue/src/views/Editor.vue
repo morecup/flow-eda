@@ -780,6 +780,12 @@ export default {
               if (detail.status === "FINISHED" || detail.status === "FAILED" || detail.status === "STOPPED") {
                 clearInterval(instancePollTimer);
                 clearInterval(nodePollTimer);
+                clearTimeout(stopTimeoutTimer);
+
+                // 如果是停止状态，清除停止标志
+                if (detail.status === "STOPPED") {
+                  isStoppingInstance.value = false;
+                }
 
                 // 只有状态发生变化时才显示提示
                 if (previousStatus !== detail.status) {
@@ -788,7 +794,8 @@ export default {
                   } else if (detail.status === "FAILED") {
                     ElMessage.error("实例执行失败");
                   } else if (detail.status === "STOPPED") {
-                    ElMessage.success("实例已成功停止");
+                    const duration = Math.round((Date.now() - stopStartTime.value) / 1000);
+                    ElMessage.success(`实例已成功停止（耗时 ${duration} 秒）`);
                   }
                 }
               }
@@ -840,8 +847,25 @@ export default {
         return;
       }
 
+      if (isStoppingInstance.value) {
+        ElMessage.info("实例正在停止中，请稍候...");
+        return;
+      }
+
+      // 设置停止状态
+      isStoppingInstance.value = true;
+      stopStartTime.value = Date.now();
+
       // 显示正在停止的提示
       ElMessage.info("正在停止实例...");
+
+      // 设置超时检测（10秒）
+      stopTimeoutTimer = setTimeout(() => {
+        if (isStoppingInstance.value) {
+          isStoppingInstance.value = false;
+          ElMessage.warning("停止实例超时，可能已经执行完成或发生异常");
+        }
+      }, 10000);
 
       // 调用 Web 服务停止实例
       instanceApi.stopInstance(currentInstanceId.value).then(() => {
@@ -850,7 +874,9 @@ export default {
         // 当轮询检测到状态变为 STOPPED 时会自动清理
       }).catch((err) => {
         ElMessage.error("停止实例失败: " + (err.message || "未知错误"));
-        // 停止失败时清理定时器
+        // 停止失败时清理定时器和状态
+        isStoppingInstance.value = false;
+        clearTimeout(stopTimeoutTimer);
         clearInterval(instancePollTimer);
         clearInterval(nodePollTimer);
       });
@@ -872,12 +898,14 @@ export default {
       clearInterval(logTimer);
       clearInterval(instancePollTimer);
       clearInterval(nodePollTimer);
+      clearTimeout(stopTimeoutTimer);
       jsPlumbInstance.reset();
     });
 
     return {
       data,
       flowStatus,
+      isStoppingInstance,
       versions,
       auxiliaryLine,
       auxiliaryLinePos,
