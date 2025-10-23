@@ -1,34 +1,35 @@
 package com.flow.eda.web.log;
 
 import com.flow.eda.common.http.Result;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
-        "spring.cloud.nacos.discovery.enabled=false",
-        "spring.cloud.nacos.config.enabled=false"
-})
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 public class LogContentProxyTest {
 
-    @LocalServerPort
-    int port;
-
-    @MockBean
+    private MockMvc mvc;
     private LogClient logClient;
 
+    @BeforeEach
+    void setup() {
+        LogContentController controller = new LogContentController();
+        logClient = Mockito.mock(LogClient.class);
+        ReflectionTestUtils.setField(controller, "logClient", logClient);
+        mvc = MockMvcBuilders.standaloneSetup(controller).build();
+    }
+
     @Test
-    void should_proxy_log_content() {
+    void should_proxy_log_content() throws Exception {
         Mockito.when(logClient.getLogContent("/x")).thenReturn(Result.of("content"));
-        RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> r = rt.getForEntity("http://localhost:"+port+"/api/v1/logs/content?path=/x", String.class);
-        Assertions.assertTrue(r.getStatusCode().is2xxSuccessful());
-        Assertions.assertTrue(r.getBody().contains("content"));
+        mvc.perform(get("/api/v1/logs/content").param("path", "/x"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("content")));
     }
 }
