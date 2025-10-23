@@ -4,6 +4,7 @@
        :style="{top: node.top, left: node.left, background: node.nodeType.background}"
        class="node-item"
        @click="setActive"
+       @dblclick="showRuntimeDetail"
        @mouseenter="showAnchor"
        @mouseleave="hideAnchor">
     <div class="node-svg">
@@ -81,12 +82,22 @@ export default {
       data.isActive = false;
     };
 
+    // 双击节点显示运行时详情
+    const showRuntimeDetail = (e) => {
+      // 只有在节点有运行状态时才显示详情
+      if (props.node.status) {
+        e.stopPropagation();
+        context.emit("showRuntimeDetail", props.node);
+      }
+    };
+
     return {
       data,
       setNotActive,
       setActive,
       showAnchor,
-      hideAnchor
+      hideAnchor,
+      showRuntimeDetail
     };
   }
 };

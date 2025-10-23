@@ -85,6 +85,7 @@
             :node="item"
             @changeLineState="changeLineState"
             @showNodeDetail="showNodeDetail"
+            @showRuntimeDetail="showRuntimeDetail"
           />
         </div>
       </div>
@@ -95,6 +96,11 @@
         @updateNode="updateNode"
       />
       <flowLog v-if="logVisible" :log-content="logContent" />
+      <nodeRuntimeDetail
+        v-model:visible="runtimeDetailVisible"
+        :node="runtimeDetailNode"
+        :instance-id="currentInstanceId"
+      />
     </div>
   </div>
 </template>
@@ -123,6 +129,7 @@ import toolbar from "../components/editor/Toolbar.vue";
 import flowNode from "../components/editor/FlowNode.vue";
 import nodeDetail from "../components/editor/NodeDetail.vue";
 import flowLog from "../components/editor/FlowLog.vue";
+import nodeRuntimeDetail from "../components/editor/NodeRuntimeDetail.vue";
 import screenfull from "screenfull";
 import { defaultApi as instanceApi } from "../api/instance.js";
 
@@ -133,6 +140,7 @@ export default {
     toolbar,
     nodeDetail,
     flowLog,
+    nodeRuntimeDetail,
   },
   props: {
     flowId: String,
@@ -668,6 +676,10 @@ export default {
     const isStoppingInstance = ref(false);
     const stopStartTime = ref(0);
 
+    // 节点运行时详情对话框
+    const runtimeDetailVisible = ref(false);
+    const runtimeDetailNode = ref(null);
+
     // 获取版本列表
     const versions = ref(["当前最新版本"]);
     const getVersions = async () => {
@@ -843,6 +855,12 @@ export default {
       });
     };
 
+    // 显示节点运行时详情
+    const showRuntimeDetail = (node) => {
+      runtimeDetailNode.value = node;
+      runtimeDetailVisible.value = true;
+    };
+
     // 停止实例
     const stopFlow = () => {
       if (!currentInstanceId.value) {
@@ -909,6 +927,9 @@ export default {
       data,
       flowStatus,
       isStoppingInstance,
+      currentInstanceId,
+      runtimeDetailVisible,
+      runtimeDetailNode,
       versions,
       auxiliaryLine,
       auxiliaryLinePos,
@@ -923,6 +944,7 @@ export default {
       keyupNode,
       changeLineState,
       showNodeDetail,
+      showRuntimeDetail,
       updateNode,
       moveDes,
       hideDes,
