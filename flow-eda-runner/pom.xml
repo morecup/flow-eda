@@ -41,6 +41,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
+            <version>9.22.3</version>
         </dependency>
 
         <dependency>
@@ -66,10 +67,6 @@
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
