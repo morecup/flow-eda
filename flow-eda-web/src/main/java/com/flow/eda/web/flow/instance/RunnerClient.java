@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * Runner 服务的 Feign 客户端
+ * Runner 服务的 Feign 客户端 - 实例控制
  */
-@FeignClient(name = "flow-eda-runner")
+@FeignClient(name = "flow-eda-runner", contextId = "runner-instance-client")
 public interface RunnerClient {
 
     /**
