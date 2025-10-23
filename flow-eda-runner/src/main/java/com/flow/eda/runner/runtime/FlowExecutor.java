@@ -169,16 +169,18 @@ public class FlowExecutor {
     /** 推送节点状态 */
     private void sendNodeStatus(FlowData currentNode, Document msg) {
         String status = msg.getString("status");
-        // 若当前节点已运行完成,则检查NextNode
-        if (Node.Status.FINISHED.name().equals(status)) {
-            forEach(
-                    getNextNode(currentNode),
-                    node -> flowStatusService.addRunningNode(flowId, node.getId()));
-        }
         msg.append("nodeId", currentNode.getId());
         String instanceId = Optional.ofNullable(currentNode.getParams())
                 .map(p -> p.getString("instanceId"))
                 .orElse(flowId);
+
+        // 若当前节点已运行完成,则检查NextNode
+        if (Node.Status.FINISHED.name().equals(status)) {
+            forEach(
+                    getNextNode(currentNode),
+                    node -> flowStatusService.addRunningNode(instanceId, node.getId()));
+        }
+
         String flowStatus =
                 ApplicationContextUtil.getBean(FlowStatusService.class)
                         .getFlowStatus(instanceId, msg);
@@ -188,7 +190,8 @@ public class FlowExecutor {
         saveNodeStatus(currentNode, msg, instanceId);
 
         // 检查流程是否已完成,如果完成则更新实例状态
-        if (flowStatusService.isFinished(flowId)) {
+        // 使用 instanceId 而不是 flowId，因为可能有多个实例同时运行同一个流程定义
+        if (flowStatusService.isFinished(instanceId)) {
             updateInstanceStatus(instanceId, flowStatus);
         }
     }
