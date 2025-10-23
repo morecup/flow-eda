@@ -61,7 +61,7 @@ public class FlowInstanceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateInstance(@PathVariable("id") String id, @RequestBody Map<String, Object> req) {
+    public ResponseEntity<Void> updateInstance(@PathVariable("id") String id, @RequestBody FlowInstanceUpdateRequest req) {
         service.updateInstance(id, req);
         return ResponseEntity.ok().build();
     }

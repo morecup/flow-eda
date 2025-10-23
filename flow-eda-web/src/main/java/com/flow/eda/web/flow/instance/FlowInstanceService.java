@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -62,13 +61,13 @@ public class FlowInstanceService {
         repository.saveNode(node);
     }
 
-    public void updateInstance(String instanceId, Map<String, Object> req) {
+    public void updateInstance(String instanceId, FlowInstanceUpdateRequest req) {
         FlowInstanceDO instance = getInstance(instanceId);
-        if (req.containsKey("status")) {
-            instance.setStatus((String) req.get("status"));
+        if (req.getStatus() != null) {
+            instance.setStatus(req.getStatus());
         }
-        if (req.containsKey("endTime")) {
-            instance.setEndTime((LocalDateTime) req.get("endTime"));
+        if (req.getEndTime() != null) {
+            instance.setEndTime(req.getEndTime());
         }
         instance.setUpdatedAt(LocalDateTime.now());
         repository.saveInstance(instance);
