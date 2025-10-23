@@ -637,7 +637,7 @@ export default {
     let logTimer;
     const fetchLogContent = async () => {
       if (!currentInstanceId.value) return;
-      const res = await fetch(`/flow-eda-web/api/flow/instances/${encodeURIComponent(currentInstanceId.value)}/logs`);
+      const res = await fetch(`/flow-eda-runner/api/instances/${encodeURIComponent(currentInstanceId.value)}/logs`);
       if (res.ok) {
         const text = await res.text();
         try {

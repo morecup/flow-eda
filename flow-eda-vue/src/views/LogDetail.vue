@@ -39,7 +39,7 @@ export default {
     const getData = (instanceId) => {
       clearInterval(timer);
       timer = setInterval(async () => {
-        const res = await fetch(`/flow-eda-web/api/flow/instances/${encodeURIComponent(instanceId)}/logs`);
+        const res = await fetch(`/flow-eda-runner/api/instances/${encodeURIComponent(instanceId)}/logs`);
         if (res.ok) {
           const text = await res.text();
           try {
