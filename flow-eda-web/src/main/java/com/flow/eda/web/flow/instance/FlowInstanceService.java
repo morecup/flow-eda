@@ -1,6 +1,8 @@
 package com.flow.eda.web.flow.instance;
 
 import com.flow.eda.common.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,8 @@ import java.util.UUID;
 
 @Service
 public class FlowInstanceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FlowInstanceService.class);
 
     private final FlowInstanceRepository repository;
     private final RunnerClient runnerClient;
@@ -60,7 +64,15 @@ public class FlowInstanceService {
     public void saveNode(FlowInstanceNodeDO node) {
         // 确保实例存在
         getInstance(node.getInstanceId());
-        repository.saveNode(node);
+
+        try {
+            repository.saveNode(node);
+        } catch (Exception e) {
+            // Best-effort: 节点状态保存失败记录日志，但不影响流程执行
+            // 如果是死锁，切面会自动重试
+            logger.warn("保存节点状态失败（实例: {}, 节点: {}）: {}",
+                node.getInstanceId(), node.getNodeId(), e.getMessage());
+        }
     }
 
     public void updateInstance(String instanceId, FlowInstanceUpdateRequest req) {
