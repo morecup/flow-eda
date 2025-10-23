@@ -126,6 +126,7 @@ import flowNode from "../components/editor/FlowNode.vue";
 import nodeDetail from "../components/editor/NodeDetail.vue";
 import flowLog from "../components/editor/FlowLog.vue";
 import screenfull from "screenfull";
+import { defaultApi as instanceApi } from "../api/instance.js";
 
 export default {
   name: "Editor",
@@ -653,6 +654,8 @@ export default {
     // 轮询获取流程状态
     const flowStatus = ref("");
     let statusTimer;
+    let instancePollTimer;
+    const currentInstanceId = ref("");
     const pollStatus = async () => {
       const res = await fetch(`/flow-eda-web/api/v1/feign/flow/status?flowId=${props.flowId}`);
       if (res.ok) {
@@ -752,10 +755,32 @@ export default {
       // 先保存流程
       const save = await saveData(null);
       if (save) {
-        // 运行流程
-        const res = await executeNodeData(props.flowId);
-        if (res) {
-          ElMessage.success("操作成功");
+        // 创建运行实例并开始轮询状态
+        try {
+          const res = await instanceApi.startInstance(props.flowId, "");
+          if (res && res.instanceId) {
+            currentInstanceId.value = res.instanceId;
+            flowStatus.value = "RUNNING";
+            ElMessage.success("已启动实例:" + res.instanceId);
+            clearInterval(instancePollTimer);
+            instancePollTimer = setInterval(async () => {
+              try {
+                const detail = await instanceApi.getInstance(currentInstanceId.value);
+                if (detail && detail.status) {
+                  flowStatus.value = detail.status;
+                  if (detail.status === "FINISHED" || detail.status === "FAILED") {
+                    clearInterval(instancePollTimer);
+                  }
+                }
+              } catch (e) {
+                // 忽略短暂错误，继续轮询
+              }
+            }, 1000);
+          } else {
+            ElMessage.error("启动实例失败");
+          }
+        } catch (e) {
+          ElMessage.error("启动实例失败");
         }
       }
     };
@@ -767,6 +792,7 @@ export default {
           ElMessage.success("操作成功");
         }
       });
+      clearInterval(instancePollTimer);
     };
 
     // 初始化页面数据，渲染流程图
@@ -787,6 +813,7 @@ export default {
     onBeforeUnmount(() => {
       clearInterval(statusTimer);
       clearInterval(logTimer);
+      clearInterval(instancePollTimer);
       jsPlumbInstance.reset();
     });
 

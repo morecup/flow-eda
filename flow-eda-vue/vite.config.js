@@ -6,6 +6,11 @@ export default defineConfig({
     port: 3000,
     proxy: {
       // Web服务 API 请求通过网关
+      "^/flow-eda-web/api": {
+        target: `http://192.168.0.53:8090`,
+        ws: true,
+        changeOrigin: true,
+      },
       "^/flow-eda-web/api/v1": {
         target: `http://192.168.0.53:8090`,
         ws: true,

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "node ./test/instance.api.test.js"
   },
   "dependencies": {
     "axios": "0.24.0",
