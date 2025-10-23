@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: flow-eda-runner
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
