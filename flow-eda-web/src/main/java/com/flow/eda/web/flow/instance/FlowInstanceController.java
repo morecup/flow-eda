@@ -1,0 +1,40 @@
+package com.flow.eda.web.flow.instance;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/flow/instances")
+public class FlowInstanceController {
+
+    private final FlowInstanceService service;
+
+    public FlowInstanceController(FlowInstanceService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> start(@RequestBody Map<String, Object> req) {
+        String flowId = (String) req.get("flowId");
+        String triggerUser = (String) req.getOrDefault("triggerUser", "");
+        String instanceId = service.startInstance(flowId, triggerUser);
+        Map<String, Object> body = new HashMap<>();
+        body.put("instanceId", instanceId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+    }
+
+    @GetMapping("/{id}")
+    public Map<String, Object> detail(@PathVariable("id") String id) {
+        FlowInstanceDO instance = service.getInstance(id);
+        Map<String, Object> body = new HashMap<>();
+        body.put("instanceId", instance.getId());
+        body.put("status", instance.getStatus());
+        return body;
+    }
+}
+
+
