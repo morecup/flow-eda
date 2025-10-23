@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -47,6 +48,38 @@ public class FlowInstanceService {
         if (logs == null || logs.isEmpty()) return;
         logs.forEach(l -> l.setInstanceId(instanceId));
         repository.saveLogs(logs);
+    }
+
+    public List<FlowInstanceNodeDO> getInstanceNodes(String instanceId) {
+        // 确保实例存在
+        getInstance(instanceId);
+        return repository.findNodesByInstanceId(instanceId);
+    }
+
+    public void saveNode(FlowInstanceNodeDO node) {
+        // 确保实例存在
+        getInstance(node.getInstanceId());
+        repository.saveNode(node);
+    }
+
+    public void updateInstance(String instanceId, Map<String, Object> req) {
+        FlowInstanceDO instance = getInstance(instanceId);
+        if (req.containsKey("status")) {
+            instance.setStatus((String) req.get("status"));
+        }
+        if (req.containsKey("endTime")) {
+            instance.setEndTime((LocalDateTime) req.get("endTime"));
+        }
+        instance.setUpdatedAt(LocalDateTime.now());
+        repository.saveInstance(instance);
+    }
+
+    public void stopInstance(String instanceId) {
+        FlowInstanceDO instance = getInstance(instanceId);
+        instance.setStatus("STOPPED");
+        instance.setEndTime(LocalDateTime.now());
+        instance.setUpdatedAt(LocalDateTime.now());
+        repository.saveInstance(instance);
     }
 }
 

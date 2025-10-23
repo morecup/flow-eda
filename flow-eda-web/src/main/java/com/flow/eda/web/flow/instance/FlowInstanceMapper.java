@@ -17,6 +17,8 @@ public interface FlowInstanceMapper {
 
     void insertNodes(List<FlowInstanceNodeDO> nodes);
 
+    void insertOrUpdateNode(FlowInstanceNodeDO node);
+
     List<FlowInstanceNodeDO> selectNodesByInstanceId(String instanceId);
 
     void insertLogs(List<FlowInstanceLogDO> logs);

@@ -37,7 +37,21 @@ export function createInstanceApi(req = defaultRequest) {
     throw new Error('poll timeout');
   }
 
-  return { startInstance, getInstance, pollInstanceStatus };
+  async function getInstanceNodes(instanceId) {
+    return await req({
+      url: `${base}/${encodeURIComponent(instanceId)}/nodes`,
+      method: 'get',
+    });
+  }
+
+  async function stopInstance(instanceId) {
+    return await req({
+      url: `${base}/${encodeURIComponent(instanceId)}/stop`,
+      method: 'post',
+    });
+  }
+
+  return { startInstance, getInstance, pollInstanceStatus, getInstanceNodes, stopInstance };
 }
 
 // 可选：默认导出真实请求实现（保留命名导出，避免在 Node 测试中强制实例化）

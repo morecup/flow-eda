@@ -55,6 +55,15 @@ public class FlowInstanceRepository {
         mapper.insertNodes(nodes);
     }
 
+    public void saveNode(FlowInstanceNodeDO node) {
+        LocalDateTime now = LocalDateTime.now();
+        node.setUpdatedAt(now);
+        if (node.getCreatedAt() == null) {
+            node.setCreatedAt(now);
+        }
+        mapper.insertOrUpdateNode(node);
+    }
+
     public List<FlowInstanceNodeDO> findNodesByInstanceId(String instanceId) {
         return mapper.selectNodesByInstanceId(instanceId);
     }

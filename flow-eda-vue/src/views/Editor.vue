@@ -117,7 +117,6 @@ import {
   getVersion,
   saveVersion,
   setNodeData,
-  stopNodeData,
 } from "../api/nodeData.js";
 // WS 已移除，使用轮询替代
 import panzoom from "panzoom";
@@ -660,10 +659,12 @@ export default {
       }
     };
 
-    // 流程实例状态（只在执行时轮询实例状态）
+    // 流程实例状态(只在执行时轮询实例状态)
     const flowStatus = ref("");
     let instancePollTimer;
+    let nodePollTimer;
     const currentInstanceId = ref("");
+    const instanceNodes = ref([]);
 
     // 获取版本列表
     const versions = ref(["当前最新版本"]);
@@ -764,8 +765,10 @@ export default {
         currentInstanceId.value = res.instanceId;
         flowStatus.value = "RUNNING";
         ElMessage.success("已启动实例:" + res.instanceId);
-        // 触发 Runner 执行并透传 instanceId（后端 NodeDataService 支持可选 instanceId）
+        // 触发 Runner 执行实例（直接调用实例级别的执行接口）
         await fetch(`/flow-eda-web/api/v1/node/data/run?flowId=${encodeURIComponent(props.flowId)}&instanceId=${encodeURIComponent(res.instanceId)}`, { method: 'POST' });
+
+        // 轮询实例状态
         clearInterval(instancePollTimer);
         instancePollTimer = setInterval(async () => {
           try {
@@ -774,7 +777,23 @@ export default {
               flowStatus.value = detail.status;
               if (detail.status === "FINISHED" || detail.status === "FAILED") {
                 clearInterval(instancePollTimer);
+                clearInterval(nodePollTimer);
               }
+            }
+          } catch (e) {
+            // 忽略短暂错误
+          }
+        }, 1000);
+
+        // 轮询节点状态
+        clearInterval(nodePollTimer);
+        nodePollTimer = setInterval(async () => {
+          try {
+            const nodes = await instanceApi.getInstanceNodes(currentInstanceId.value);
+            if (nodes && Array.isArray(nodes)) {
+              instanceNodes.value = nodes;
+              // 更新画布上的节点状态
+              updateNodeStatus(nodes);
             }
           } catch (e) {
             // 忽略短暂错误
@@ -785,14 +804,39 @@ export default {
       }
     };
 
-    // 停止流程
-    const stopFlow = () => {
-      stopNodeData(props.flowId).then((res) => {
-        if (res) {
-          ElMessage.success("操作成功");
+    // 更新画布上的节点状态
+    const updateNodeStatus = (nodes) => {
+      const nodeMap = {};
+      nodes.forEach(n => {
+        nodeMap[n.nodeId] = n;
+      });
+      data.nodeList.forEach(v => {
+        const nodeStatus = nodeMap[v.id];
+        if (nodeStatus) {
+          v.status = nodeStatus.status;
+          v.error = nodeStatus.errorStack;
+          v.output = nodeStatus.outputJson;
         }
       });
+    };
+
+    // 停止实例
+    const stopFlow = () => {
+      if (!currentInstanceId.value) {
+        ElMessage.warning("没有运行中的实例");
+        return;
+      }
+      // 调用 Web 服务停止实例,而不是停止流程定义
+      instanceApi.stopInstance(currentInstanceId.value).then((res) => {
+        if (res) {
+          ElMessage.success("实例已停止");
+          flowStatus.value = "STOPPED";
+        }
+      }).catch((err) => {
+        ElMessage.error("停止实例失败: " + (err.message || "未知错误"));
+      });
       clearInterval(instancePollTimer);
+      clearInterval(nodePollTimer);
     };
 
     // 初始化页面数据,渲染流程图
@@ -806,10 +850,11 @@ export default {
       await getVersions();
     });
 
-    // 组件被销毁之前，清理定时器
+    // 组件被销毁之前,清理定时器
     onBeforeUnmount(() => {
       clearInterval(logTimer);
       clearInterval(instancePollTimer);
+      clearInterval(nodePollTimer);
       jsPlumbInstance.reset();
     });
 

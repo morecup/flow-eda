@@ -84,6 +84,21 @@
         </foreach>
     </insert>
 
+    <insert id="insertOrUpdateNode">
+        INSERT INTO flow_instance_node
+        (instance_id, node_id, node_name, node_type, status, duration_ms, input_json, output_json, error_stack, start_time, end_time, created_at, updated_at)
+        VALUES
+        (#{instanceId}, #{nodeId}, #{nodeName}, #{nodeType}, #{status}, #{durationMs},
+        #{inputJson}, #{outputJson}, #{errorStack}, #{startTime}, #{endTime}, #{createdAt}, #{updatedAt})
+        ON DUPLICATE KEY UPDATE
+        status = VALUES(status),
+        duration_ms = VALUES(duration_ms),
+        output_json = VALUES(output_json),
+        error_stack = VALUES(error_stack),
+        end_time = VALUES(end_time),
+        updated_at = VALUES(updated_at)
+    </insert>
+
     <select id="selectNodesByInstanceId" resultMap="FlowInstanceNodeResultMap">
         SELECT * FROM flow_instance_node WHERE instance_id = #{instanceId} ORDER BY created_at ASC
     </select>

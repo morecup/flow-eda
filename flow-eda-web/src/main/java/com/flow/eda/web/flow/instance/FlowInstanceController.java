@@ -47,6 +47,30 @@ public class FlowInstanceController {
         service.appendLogs(id, logs);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @GetMapping("/{id}/nodes")
+    public List<FlowInstanceNodeDO> getNodes(@PathVariable("id") String id) {
+        return service.getInstanceNodes(id);
+    }
+
+    @PostMapping("/{id}/nodes")
+    public ResponseEntity<Void> saveNode(@PathVariable("id") String id, @RequestBody FlowInstanceNodeDO node) {
+        node.setInstanceId(id);
+        service.saveNode(node);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateInstance(@PathVariable("id") String id, @RequestBody Map<String, Object> req) {
+        service.updateInstance(id, req);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/stop")
+    public ResponseEntity<Void> stopInstance(@PathVariable("id") String id) {
+        service.stopInstance(id);
+        return ResponseEntity.ok().build();
+    }
 }
 
 

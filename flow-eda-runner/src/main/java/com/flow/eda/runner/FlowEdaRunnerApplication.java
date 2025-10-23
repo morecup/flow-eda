@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.DispatcherServlet;
 
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.flow.eda.runner.status")
+@EnableFeignClients(basePackages = {"com.flow.eda.runner.status", "com.flow.eda.runner.node", "com.flow.eda.runner.logs"})
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @ComponentScan(
         basePackages = {

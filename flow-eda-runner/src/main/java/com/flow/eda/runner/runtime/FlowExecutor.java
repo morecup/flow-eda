@@ -5,12 +5,17 @@ import com.flow.eda.common.model.FlowData;
 import com.flow.eda.runner.node.Node;
 import com.flow.eda.runner.logs.InstanceLogClient;
 import com.flow.eda.runner.logs.InstanceLogRecord;
+import com.flow.eda.runner.node.InstanceClient;
+import com.flow.eda.runner.node.InstanceNodeClient;
+import com.flow.eda.runner.node.InstanceNodeRecord;
+import com.flow.eda.runner.node.InstanceUpdateRequest;
 import com.flow.eda.runner.node.NodeTypeEnum;
 import com.flow.eda.runner.status.FlowStatusService;
 import com.flow.eda.runner.utils.ApplicationContextUtil;
 import com.flow.eda.runner.utils.FlowLogs;
 import org.bson.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -164,7 +169,7 @@ public class FlowExecutor {
     /** 推送节点状态 */
     private void sendNodeStatus(FlowData currentNode, Document msg) {
         String status = msg.getString("status");
-        // 若当前节点已运行完成，则检查NextNode
+        // 若当前节点已运行完成,则检查NextNode
         if (Node.Status.FINISHED.name().equals(status)) {
             forEach(
                     getNextNode(currentNode),
@@ -177,6 +182,68 @@ public class FlowExecutor {
         String flowStatus =
                 ApplicationContextUtil.getBean(FlowStatusService.class)
                         .getFlowStatus(instanceId, msg);
-        // MQ 已移除，状态计算仅用于内存管理
+        // MQ 已移除,状态计算仅用于内存管理
+
+        // 保存节点状态到数据库
+        saveNodeStatus(currentNode, msg, instanceId);
+
+        // 检查流程是否已完成,如果完成则更新实例状态
+        if (flowStatusService.isFinished(flowId)) {
+            updateInstanceStatus(instanceId, flowStatus);
+        }
+    }
+
+    /** 保存节点状态到数据库 */
+    private void saveNodeStatus(FlowData currentNode, Document msg, String instanceId) {
+        try {
+            InstanceNodeClient client = ApplicationContextUtil.getBean(InstanceNodeClient.class);
+            InstanceNodeRecord record = new InstanceNodeRecord();
+            record.setInstanceId(instanceId);
+            record.setNodeId(currentNode.getId());
+            record.setNodeName(currentNode.getNodeName());
+            record.setNodeType(currentNode.getType());
+            record.setStatus(msg.getString("status"));
+
+            // 设置输入输出
+            if (currentNode.getParams() != null) {
+                record.setInputJson(currentNode.getParams().toJson());
+            }
+            if (msg.containsKey("output")) {
+                record.setOutputJson(msg.get("output", Document.class).toJson());
+            }
+
+            // 设置错误信息
+            if (msg.containsKey("error")) {
+                record.setErrorStack(msg.getString("error"));
+            }
+
+            // 设置时间
+            if (Node.Status.RUNNING.name().equals(msg.getString("status"))) {
+                record.setStartTime(LocalDateTime.now());
+            } else if (Node.Status.FINISHED.name().equals(msg.getString("status"))
+                    || Node.Status.FAILED.name().equals(msg.getString("status"))) {
+                record.setEndTime(LocalDateTime.now());
+            }
+
+            client.saveNode(instanceId, record);
+        } catch (Exception e) {
+            // Best-effort: 节点状态保存失败不影响流程执行
+            FlowLogs.error(flowId, "save node status failed: {}", e.getMessage());
+        }
+    }
+
+    /** 更新实例状态到数据库 */
+    private void updateInstanceStatus(String instanceId, String status) {
+        try {
+            InstanceClient client = ApplicationContextUtil.getBean(InstanceClient.class);
+            InstanceUpdateRequest request = new InstanceUpdateRequest();
+            request.setStatus(status);
+            request.setEndTime(LocalDateTime.now());
+            client.updateInstance(instanceId, request);
+            FlowLogs.info(flowId, "instance [{}] finished with status: {}", instanceId, status);
+        } catch (Exception e) {
+            // Best-effort: 实例状态更新失败不影响流程执行
+            FlowLogs.error(flowId, "update instance status failed: {}", e.getMessage());
+        }
     }
 }
