@@ -825,17 +825,21 @@ export default {
         ElMessage.warning("没有运行中的实例");
         return;
       }
-      // 调用 Web 服务停止实例,而不是停止流程定义
-      instanceApi.stopInstance(currentInstanceId.value).then((res) => {
-        if (res) {
-          ElMessage.success("实例已停止");
-          flowStatus.value = "STOPPED";
-        }
+
+      // 显示正在停止的提示
+      ElMessage.info("正在停止实例...");
+
+      // 调用 Web 服务停止实例
+      instanceApi.stopInstance(currentInstanceId.value).then(() => {
+        // 停止命令已发送，继续轮询等待后端真正停止
+        // 不立即清除定时器，让它继续轮询
+        // 当轮询检测到状态变为 STOPPED 时会自动清理
       }).catch((err) => {
         ElMessage.error("停止实例失败: " + (err.message || "未知错误"));
+        // 停止失败时清理定时器
+        clearInterval(instancePollTimer);
+        clearInterval(nodePollTimer);
       });
-      clearInterval(instancePollTimer);
-      clearInterval(nodePollTimer);
     };
 
     // 初始化页面数据,渲染流程图
