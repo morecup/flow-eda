@@ -110,11 +110,16 @@ public class FlowExecutor {
 
     /** 节点数据执行后回调，继续执行下一节点 */
     private void runNext(FlowData currentNode, Node nodeInstance, Document p) {
-        // 推送节点消息
-        if (NodeTypeEnum.OUTPUT.getType().equals(currentNode.getType())) {
-            sendOutput(currentNode, p);
-        } else if (Node.Status.FINISHED.equals(nodeInstance.status())) {
-            sendNodeStatus(currentNode, new Document("status", Node.Status.FINISHED.name()));
+        // 所有完成的节点都保存输出信息，用于调试和监控
+        if (Node.Status.FINISHED.equals(nodeInstance.status())) {
+            Document output = new Document();
+            output.putAll(p);
+            output.remove("input");
+            output.remove("payload");
+
+            Document msg = new Document("status", Node.Status.FINISHED.name())
+                    .append("output", output);
+            sendNodeStatus(currentNode, msg);
         }
         // 多个下游节点，需要并行执行
         List<FlowData> nextNodes = getNextNode(currentNode);
@@ -154,16 +159,6 @@ public class FlowExecutor {
             currentNode.setParams(params);
         }
         return currentNode;
-    }
-
-    /** 输出节点发送节点状态和输出信息 */
-    private void sendOutput(FlowData currentNode, Document p) {
-        Document output = new Document();
-        output.putAll(p);
-        output.remove("input");
-        output.remove("payload");
-        Document msg = new Document("status", Node.Status.FINISHED.name()).append("output", output);
-        sendNodeStatus(currentNode, msg);
     }
 
     /** 推送节点状态 */
