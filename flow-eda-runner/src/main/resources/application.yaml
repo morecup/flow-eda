@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9071
 spring:
   application:
     name: flow-eda-server
