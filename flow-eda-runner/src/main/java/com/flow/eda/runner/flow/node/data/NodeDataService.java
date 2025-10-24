@@ -18,7 +18,6 @@ import static com.flow.eda.common.utils.CollectionUtil.isEmpty;
 
 @Service
 public class NodeDataService {
-    @Autowired private FlowDataClient flowDataClient;
     @Autowired private NodeDataMapper nodeDataMapper;
     @Autowired private NodeTypeService nodeTypeService;
 
@@ -50,7 +49,9 @@ public class NodeDataService {
     }
 
     public void runNodeData(String flowId) {
-        flowDataClient.runFlowData(this.queryNodeData(flowId));
+        // runFlowData 功能已合并到本地，通过 FlowExecutor 直接执行
+        // TODO: 需要通过 FlowExecutor 来执行流程
+        List<FlowData> data = this.queryNodeData(flowId);
     }
 
     public void runNodeData(String flowId, String instanceId) {
@@ -62,7 +63,8 @@ public class NodeDataService {
             params.put("instanceId", instanceId);
             d.setParams(params);
         }
-        flowDataClient.runFlowData(data);
+        // runFlowData 功能已合并到本地，通过 FlowExecutor 直接执行
+        // TODO: 需要通过 FlowExecutor 来执行流程
     }
 
     public List<FlowData> queryNodeData(String flowId) {

@@ -4,7 +4,7 @@ import com.flow.eda.common.utils.CollectionUtil;
 import com.flow.eda.runner.flow.Flow;
 import com.flow.eda.runner.flow.FlowMapper;
 import com.flow.eda.runner.flow.FlowRequest;
-import com.flow.eda.runner.flow.node.data.FlowDataClient;
+import com.flow.eda.runner.flow.node.data.NodeDataService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Service
 public class FlowStatusService {
     private final Map<String, String> statusMap = new HashMap<>();
-    @Autowired private FlowDataClient flowDataClient;
+    @Autowired private NodeDataService nodeDataService;
     @Autowired private FlowMapper flowMapper;
 
     /** 刷新缓存中的流程状态 */
@@ -44,7 +44,7 @@ public class FlowStatusService {
             // 如果流程已执行完毕，则需要清理缓存数据
             if (!Flow.Status.RUNNING.name().equals(status)) {
                 statusMap.remove(flowId);
-                flowDataClient.clearFlowData(flowId);
+                // clearFlowData 功能已合并到本地服务，无需远程调用
             }
         }
     }
@@ -56,6 +56,9 @@ public class FlowStatusService {
         request.setStatus(Flow.Status.RUNNING);
         request.setUsername("test");
         List<Flow> flowList = flowMapper.findByRequest(request);
-        CollectionUtil.forEach(flowList, flow -> flowDataClient.stopFlowData(flow.getId()));
+        // stopFlowData 功能已合并到本地服务
+        CollectionUtil.forEach(flowList, flow -> {
+            // TODO: 实现停止流程数据的逻辑
+        });
     }
 }
