@@ -5,6 +5,7 @@ import com.flow.eda.runner.utils.ApplicationContextUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.flow.eda.runner.status", "com.flow.eda.runner.node", "com.flow.eda.runner.logs"})
-@SpringBootApplication(exclude = MongoAutoConfiguration.class)
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class, FlywayAutoConfiguration.class})
 @ComponentScan(
         basePackages = {
                 "com.flow.eda.runner",
