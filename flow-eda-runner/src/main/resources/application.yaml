@@ -1,8 +1,8 @@
 server:
-  port: 8085
+  port: 8080
 spring:
   application:
-    name: flow-eda-runner
+    name: flow-eda-server
   main:
     allow-bean-definition-overriding: true
   cloud:

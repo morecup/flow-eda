@@ -2,6 +2,8 @@ package com.flow.eda.runner.status;
 
 import com.flow.eda.common.model.FlowData;
 import com.flow.eda.runner.node.Node;
+import com.flow.eda.runner.flow.FlowService;
+import com.flow.eda.runner.flow.node.data.NodeDataService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ public class FlowStatusService {
     /** 流程运行结束后会发起通知 */
     private final Map<String, Consumer<String>> noticeMap = new ConcurrentHashMap<>();
 
-    @Autowired private FlowStatusClient flowStatusClient;
+    @Autowired private FlowService flowService;
+    @Autowired private NodeDataService nodeDataService;
 
     public void startRun(String flowId, List<FlowData> starts, List<FlowData> timer) {
         this.runningMap.put(flowId, new HashSet<>());
@@ -33,7 +36,7 @@ public class FlowStatusService {
     public String getFlowStatus(String flowId, Document message) {
         String nodeId = message.getString("nodeId");
         if (nodeId == null) {
-            return flowStatusClient.getFlowStatus(flowId).getResult();
+            return flowService.findById(flowId).getStatus().name();
         }
         String status = message.getString("status");
 
@@ -62,7 +65,7 @@ public class FlowStatusService {
     /** 判断当前流程状态是否已完成 */
     public boolean isFinished(String flowId) {
         if (!runningMap.containsKey(flowId)) {
-            String status = flowStatusClient.getFlowStatus(flowId).getResult();
+            String status = flowService.findById(flowId).getStatus().name();
             return Node.Status.FINISHED.name().equals(status);
         }
         return runningMap.get(flowId).isEmpty();
@@ -93,7 +96,7 @@ public class FlowStatusService {
 
     /** 获取流程节点数据 */
     public List<FlowData> getFlowData(String flowId) {
-        return flowStatusClient.getFlowData(flowId).getResult();
+        return nodeDataService.queryNodeData(flowId);
     }
 
     /** 清理缓存数据 */
