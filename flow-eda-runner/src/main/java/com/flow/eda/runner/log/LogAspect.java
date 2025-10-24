@@ -32,7 +32,7 @@ public class LogAspect {
         log.error(message);
     }
 
-    @Pointcut("@annotation(com.flow.eda.web.log.OperationLog)")
+    @Pointcut("@annotation(com.flow.eda.runner.log.OperationLog)")
     public void logPointcut() {}
 
     @Around("logPointcut()")

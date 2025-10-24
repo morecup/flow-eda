@@ -1,4 +1,4 @@
-package com.flow.eda.web.flow.instance;
+package com.flow.eda.runner.instance;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +24,7 @@ public class DeadlockRetryAspect {
     /**
      * 拦截 FlowInstanceRepository 的所有方法，添加死锁重试逻辑
      */
-    @Around("execution(* com.flow.eda.web.flow.instance.FlowInstanceRepository.*(..))")
+    @Around("execution(* com.flow.eda.runner.instance.FlowInstanceRepository.*(..))")
     public Object retryOnDeadlock(ProceedingJoinPoint pjp) throws Throwable {
         int attempts = 0;
         Throwable lastException = null;
