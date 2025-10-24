@@ -13,19 +13,11 @@ spring:
     gateway:
       # 路由配置
       routes:
-        # Web服务路由
-        - id: flow-eda-web
-          uri: lb://flow-eda-web
+        # 统一服务路由 - Web 和 Runner 已合并为单体应用
+        - id: flow-eda-server
+          uri: lb://flow-eda-server
           predicates:
-            - Path=/flow-eda-web/**
-          filters:
-            - StripPrefix=1
-        # Logger服务路由已下线（改为实例日志，存数据库，前端从 web 查询）
-        # Runner服务路由
-        - id: flow-eda-runner
-          uri: lb://flow-eda-runner
-          predicates:
-            - Path=/flow-eda-runner/**
+            - Path=/flow-eda-web/**,/flow-eda-runner/**
           filters:
             - StripPrefix=1
       # 全局CORS配置
