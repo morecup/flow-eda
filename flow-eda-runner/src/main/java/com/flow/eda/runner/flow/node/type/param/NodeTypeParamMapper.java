@@ -9,7 +9,7 @@ import java.util.List;
 public interface NodeTypeParamMapper {
 
     @Select(
-            "<script>SELECT * FROM eda_flow_node_type_param WHERE type_id IN "
+            "<script>SELECT * FROM flow_node_type_param WHERE type_id IN "
                     + "<foreach collection='ids' item='id' open='(' separator=',' close=')'>"
                     + "#{id}</foreach></script>")
     List<NodeTypeParam> findByTypeIds(List<Long> ids);
