@@ -42,9 +42,7 @@
 
     <modules>
         <module>flow-eda-common</module>
-        <module>flow-eda-runner</module>
-        <module>flow-eda-web</module>
-        <module>flow-eda-gateway</module>
+        <module>flow-eda-server</module>
     </modules>
 
     <build>

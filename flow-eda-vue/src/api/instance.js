@@ -4,7 +4,7 @@ async function defaultRequest(config) {
 }
 
 export function createInstanceApi(req = defaultRequest) {
-  const base = '/flow-eda-runner/api/instances';
+  const base = '/flow-eda-server/api/instances';
 
   async function startInstance(flowId, triggerUser = '') {
     return await req({
