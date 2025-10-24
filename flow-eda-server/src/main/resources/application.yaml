@@ -1,7 +1,7 @@
 server:
   port: 9071
-  servlet:
-    context-path: /flow-eda-server
+  # 使用网关时不需要 context-path
+  # 网关会处理 /flow-eda-server 前缀并转发给后端
 
 spring:
   application:
