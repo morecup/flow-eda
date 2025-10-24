@@ -31,11 +31,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
-# Flyway 配置
-# 注意：Instance 表已经在 Web 数据库中创建，这里禁用 Flyway 避免冲突
-# 如果是全新数据库，可以启用 Flyway
-# flyway:
-#   enabled: true
-#   locations: classpath:db/migration
-#   baseline-on-migrate: true
+# Flyway 配置 - 暂时禁用，数据库表已存在
+flyway:
+  enabled: false
 
