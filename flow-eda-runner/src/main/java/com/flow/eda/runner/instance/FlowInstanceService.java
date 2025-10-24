@@ -93,7 +93,7 @@ public class FlowInstanceService {
 
         // 停止流程执行
         try {
-            flowStatusService.stopFlow(instanceId);
+            flowStatusService.stopInstance(instanceId);
         } catch (Exception e) {
             // Best-effort: 停止失败不影响数据库状态更新
             logger.warn("停止流程失败（实例: {}）: {}", instanceId, e.getMessage());

@@ -1,0 +1,630 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building flow-eda-runner 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ flow-eda-runner ---
+[INFO] Deleting D:\work\project\flow-eda\flow-eda-runner\target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.2.0:resources (default-resources) @ flow-eda-runner ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Using 'UTF-8' encoding to copy filtered properties files.
+[INFO] Copying 1 resource
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ flow-eda-runner ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 90 source files to D:\work\project\flow-eda\flow-eda-runner\target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[6,36] 无法访问com.flow.eda.runner.instance.FlowInstanceRepository
+  错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceRepository.java
+    文件不包含类com.flow.eda.runner.instance.FlowInstanceRepository
+    请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[7,36] 无法访问com.flow.eda.runner.instance.FlowInstanceNodeDO
+  错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceNodeDO.java
+    文件不包含类com.flow.eda.runner.instance.FlowInstanceNodeDO
+    请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[8,36] 无法访问com.flow.eda.runner.instance.FlowInstanceLogDO
+  错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceLogDO.java
+    文件不包含类com.flow.eda.runner.instance.FlowInstanceLogDO
+    请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[9,36] 无法访问com.flow.eda.runner.instance.FlowInstanceDO
+  错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceDO.java
+    文件不包含类com.flow.eda.runner.instance.FlowInstanceDO
+    请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/InstanceController.java:[25,19] 无法访问com.flow.eda.runner.instance.FlowInstanceService
+  错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceService.java
+    文件不包含类com.flow.eda.runner.instance.FlowInstanceService
+    请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[7,42] 找不到符号
+  符号:   类 FlowDataClient
+  位置: 程序包 com.flow.eda.runner.flow.node.data
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[20,24] 找不到符号
+  符号:   类 FlowDataClient
+  位置: 类 com.flow.eda.runner.flow.status.FlowStatusService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[21,24] 找不到符号
+  符号:   类 FlowDataClient
+  位置: 类 com.flow.eda.runner.flow.node.data.NodeDataService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceRepository.java:[14,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceRepository
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceNodeDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceNodeDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceLogDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceLogDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogRequest.java:[3,29] 程序包com.flow.eda.web.http不存在
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogRequest.java:[9,33] 找不到符号
+  符号: 类 PageRequest
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceService.java:[14,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[41,22] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[56,16] 找不到符号
+  符号:   方法 setStatus(com.flow.eda.runner.flow.Flow.Status)
+  位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[57,16] 找不到符号
+  符号:   方法 setUsername(java.lang.String)
+  位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[59,82] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/utils/FlowLogs.java:[11,9] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.utils.FlowLogs
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/utils/FlowLogs.java:[15,9] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.utils.FlowLogs
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/AbstractMqttNode.java:[29,42] 找不到符号
+  符号:   方法 getBroker()
+  位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/AbstractMqttNode.java:[29,55] 找不到符号
+  符号:   方法 getClientId()
+  位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[32,13] 找不到符号
+  符号:   方法 getClient()
+  位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[32,33] 找不到符号
+  符号:   方法 getTopic()
+  位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[47,32] 找不到符号
+  符号:   方法 getTopic()
+  位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[31,42] 方法引用无效
+  找不到符号
+    符号:   方法 getTypeId()
+    位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[32,53] 方法引用无效
+  找不到符号
+    符号:   方法 getId()
+    位置: 类 com.flow.eda.runner.flow.node.type.NodeType
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[33,25] 方法引用无效
+  找不到符号
+    符号:   方法 setNodeType()
+    位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[42,36] 找不到符号
+  符号:   方法 getFlowId()
+  位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[80,32] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[81,36] 找不到符号
+  符号:   方法 getFlowId()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[82,38] 找不到符号
+  符号:   方法 getNodeName()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[83,21] 找不到符号
+  符号:   方法 getNodeType()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[84,38] 找不到符号
+  符号:   方法 getNodeType()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[88,21] 找不到符号
+  符号:   方法 getParams()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[89,30] 找不到符号
+  符号:   方法 getParams()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[90,25] 找不到符号
+  符号:   方法 getPayload()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[91,50] 找不到符号
+  符号:   方法 getPayload()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[93,28] 找不到符号
+  符号:   方法 getPayload()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[94,54] 找不到符号
+  符号:   方法 getPayload()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[97,34] 找不到符号
+  符号:   方法 getFrom()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[98,32] 找不到符号
+  符号:   方法 getTo()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[31,71] 找不到符号
+  符号:   方法 getMenu()
+  位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[45,36] 方法引用无效
+  找不到符号
+    符号:   方法 getId()
+    位置: 类 com.flow.eda.runner.flow.node.type.NodeType
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,32] 找不到符号
+  符号:   方法 setParams(java.util.List<com.flow.eda.runner.flow.node.type.param.NodeTypeParam>)
+  位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,64] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,81] 找不到符号
+  符号:   方法 getTypeId()
+  位置: 类型为com.flow.eda.runner.flow.node.type.param.NodeTypeParam的变量 p
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[23,16] 找不到符号
+  符号:   方法 setUsername(<nulltype>)
+  位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[32,13] 找不到符号
+  符号:   方法 setUsername(<nulltype>)
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[54,33] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[57,38] 找不到符号
+  符号:   方法 getName()
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[18,37] 找不到符号
+  符号:   方法 getPage()
+  位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[18,56] 找不到符号
+  符号:   方法 getLimit()
+  位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[23,13] 找不到符号
+  符号:   方法 setStatus(com.flow.eda.runner.flow.Flow.Status)
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[24,13] 找不到符号
+  符号:   方法 setCreateDate(java.util.Date)
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[25,13] 找不到符号
+  符号:   方法 setUpdateDate(java.util.Date)
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[38,13] 找不到符号
+  符号:   方法 setUpdateDate(java.util.Date)
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[40,29] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[26,19] 找不到符号
+  符号:   方法 setPage(int)
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[27,19] 找不到符号
+  符号:   方法 setLimit(int)
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[28,19] 找不到符号
+  符号:   方法 setTotal(long)
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[36,35] 找不到符号
+  符号:   方法 getPage()
+  位置: 类型为com.flow.eda.runner.http.PageRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[37,36] 找不到符号
+  符号:   方法 getLimit()
+  位置: 类型为com.flow.eda.runner.http.PageRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[38,19] 找不到符号
+  符号:   方法 setTotal(int)
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[44,36] 找不到符号
+  符号:   方法 getPage()
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[44,64] 找不到符号
+  符号:   方法 getLimit()
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[45,45] 找不到符号
+  符号:   方法 getLimit()
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[46,33] 找不到符号
+  符号:   方法 getTotal()
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[47,39] 找不到符号
+  符号:   方法 getTotal()
+  位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[32,9] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[57,9] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[77,9] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/valve/ValveNodeManager.java:[48,51] 找不到符号
+  符号:   方法 getPeriod()
+  位置: 类型为com.flow.eda.runner.node.valve.ValveNode的变量 valveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowDataRuntime.java:[70,34] 找不到符号
+  符号:   方法 getType()
+  位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 START
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowDataRuntime.java:[74,34] 找不到符号
+  符号:   方法 getType()
+  位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 TIMER
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/status/FlowStatusService.java:[39,48] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类 com.flow.eda.runner.flow.Flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/status/FlowStatusService.java:[68,57] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类 com.flow.eda.runner.flow.Flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[49,34] 找不到符号
+  符号:   方法 setVersion(java.lang.String)
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[72,54] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[73,58] 找不到符号
+  符号:   方法 getFlowId()
+  位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/NodeTypeEnum.java:[88,23] 找不到符号
+  符号:   方法 getType()
+  位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 anEnum
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/NodeTypeEnum.java:[100,24] 找不到符号
+  符号:   方法 getClazz()
+  位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 typeEnum
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceService.java:[96,30] 找不到符号
+  符号:   方法 stopFlow(java.lang.String)
+  位置: 类型为com.flow.eda.runner.status.FlowStatusService的变量 flowStatusService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[15,31] 找不到符号
+  符号:   方法 getClientId()
+  位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[18,61] 找不到符号
+  符号:   方法 getClient()
+  位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[34,31] 找不到符号
+  符号:   方法 getClientId()
+  位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[47,26] 找不到符号
+  符号:   方法 getClientId()
+  位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[48,63] 找不到符号
+  符号:   方法 getClientId()
+  位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/http/receive/HttpReceiveNode.java:[67,13] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.node.http.receive.HttpReceiveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/http/receive/HttpReceiveNode.java:[101,13] 找不到符号
+  符号:   变量 log
+  位置: 类 com.flow.eda.runner.node.http.receive.HttpReceiveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[77,29] 找不到符号
+  符号:   类 FlowInstanceRepository
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[77,96] 找不到符号
+  符号:   类 FlowInstanceRepository
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[78,29] 找不到符号
+  符号:   类 FlowInstanceLogDO
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[78,57] 找不到符号
+  符号:   类 FlowInstanceLogDO
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[101,17] 找不到符号
+  符号:   类 FlowInstanceRepository
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[101,84] 找不到符号
+  符号:   类 FlowInstanceRepository
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[102,17] 找不到符号
+  符号:   类 FlowInstanceLogDO
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[102,45] 找不到符号
+  符号:   类 FlowInstanceLogDO
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[201,13] 找不到符号
+  符号:   类 FlowInstanceRepository
+  位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[INFO] 100 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4.594 s
+[INFO] Finished at: 2025-10-24T08:39:59+08:00
+[INFO] Final Memory: 45M/240M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile (default-compile) on project flow-eda-runner: Compilation failure: Compilation failure:
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[6,36] 无法访问com.flow.eda.runner.instance.FlowInstanceRepository
+[ERROR] 错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceRepository.java
+[ERROR] 文件不包含类com.flow.eda.runner.instance.FlowInstanceRepository
+[ERROR] 请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[7,36] 无法访问com.flow.eda.runner.instance.FlowInstanceNodeDO
+[ERROR] 错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceNodeDO.java
+[ERROR] 文件不包含类com.flow.eda.runner.instance.FlowInstanceNodeDO
+[ERROR] 请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[8,36] 无法访问com.flow.eda.runner.instance.FlowInstanceLogDO
+[ERROR] 错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceLogDO.java
+[ERROR] 文件不包含类com.flow.eda.runner.instance.FlowInstanceLogDO
+[ERROR] 请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[9,36] 无法访问com.flow.eda.runner.instance.FlowInstanceDO
+[ERROR] 错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceDO.java
+[ERROR] 文件不包含类com.flow.eda.runner.instance.FlowInstanceDO
+[ERROR] 请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/InstanceController.java:[25,19] 无法访问com.flow.eda.runner.instance.FlowInstanceService
+[ERROR] 错误的源文件: D:\work\project\flow-eda\flow-eda-runner\src\main\java\com\flow\eda\runner\instance\FlowInstanceService.java
+[ERROR] 文件不包含类com.flow.eda.runner.instance.FlowInstanceService
+[ERROR] 请删除该文件或确保该文件位于正确的源路径子目录中。
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[7,42] 找不到符号
+[ERROR] 符号:   类 FlowDataClient
+[ERROR] 位置: 程序包 com.flow.eda.runner.flow.node.data
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[20,24] 找不到符号
+[ERROR] 符号:   类 FlowDataClient
+[ERROR] 位置: 类 com.flow.eda.runner.flow.status.FlowStatusService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[21,24] 找不到符号
+[ERROR] 符号:   类 FlowDataClient
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.data.NodeDataService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceRepository.java:[14,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceRepository
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceNodeDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceNodeDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceLogDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceLogDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceDO.java:[8,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceDO
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogRequest.java:[3,29] 程序包com.flow.eda.web.http不存在
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogRequest.java:[9,33] 找不到符号
+[ERROR] 符号: 类 PageRequest
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceService.java:[14,8] 类重复: com.flow.eda.web.flow.instance.FlowInstanceService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[41,22] 找不到符号
+[ERROR] 符号:   方法 getStatus()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[56,16] 找不到符号
+[ERROR] 符号:   方法 setStatus(com.flow.eda.runner.flow.Flow.Status)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[57,16] 找不到符号
+[ERROR] 符号:   方法 setUsername(java.lang.String)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/status/FlowStatusService.java:[59,82] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/utils/FlowLogs.java:[11,9] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.utils.FlowLogs
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/utils/FlowLogs.java:[15,9] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.utils.FlowLogs
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/AbstractMqttNode.java:[29,42] 找不到符号
+[ERROR] 符号:   方法 getBroker()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/AbstractMqttNode.java:[29,55] 找不到符号
+[ERROR] 符号:   方法 getClientId()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[32,13] 找不到符号
+[ERROR] 符号:   方法 getClient()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[32,33] 找不到符号
+[ERROR] 符号:   方法 getTopic()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/pub/PubMqttNode.java:[47,32] 找不到符号
+[ERROR] 符号:   方法 getTopic()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.pub.PubMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[31,42] 方法引用无效
+[ERROR] 找不到符号
+[ERROR] 符号:   方法 getTypeId()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[32,53] 方法引用无效
+[ERROR] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.type.NodeType
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[33,25] 方法引用无效
+[ERROR] 找不到符号
+[ERROR] 符号:   方法 setNodeType()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[42,36] 找不到符号
+[ERROR] 符号:   方法 getFlowId()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.data.NodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[80,32] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[81,36] 找不到符号
+[ERROR] 符号:   方法 getFlowId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[82,38] 找不到符号
+[ERROR] 符号:   方法 getNodeName()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[83,21] 找不到符号
+[ERROR] 符号:   方法 getNodeType()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[84,38] 找不到符号
+[ERROR] 符号:   方法 getNodeType()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[88,21] 找不到符号
+[ERROR] 符号:   方法 getParams()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[89,30] 找不到符号
+[ERROR] 符号:   方法 getParams()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[90,25] 找不到符号
+[ERROR] 符号:   方法 getPayload()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[91,50] 找不到符号
+[ERROR] 符号:   方法 getPayload()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[93,28] 找不到符号
+[ERROR] 符号:   方法 getPayload()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[94,54] 找不到符号
+[ERROR] 符号:   方法 getPayload()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[97,34] 找不到符号
+[ERROR] 符号:   方法 getFrom()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataService.java:[98,32] 找不到符号
+[ERROR] 符号:   方法 getTo()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 nodeData
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[31,71] 找不到符号
+[ERROR] 符号:   方法 getMenu()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[45,36] 方法引用无效
+[ERROR] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.node.type.NodeType
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,32] 找不到符号
+[ERROR] 符号:   方法 setParams(java.util.List<com.flow.eda.runner.flow.node.type.param.NodeTypeParam>)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,64] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.type.NodeType的变量 t
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/type/NodeTypeService.java:[48,81] 找不到符号
+[ERROR] 符号:   方法 getTypeId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.type.param.NodeTypeParam的变量 p
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[23,16] 找不到符号
+[ERROR] 符号:   方法 setUsername(<nulltype>)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[32,13] 找不到符号
+[ERROR] 符号:   方法 setUsername(<nulltype>)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[54,33] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowController.java:[57,38] 找不到符号
+[ERROR] 符号:   方法 getName()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[18,37] 找不到符号
+[ERROR] 符号:   方法 getPage()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[18,56] 找不到符号
+[ERROR] 符号:   方法 getLimit()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.FlowRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[23,13] 找不到符号
+[ERROR] 符号:   方法 setStatus(com.flow.eda.runner.flow.Flow.Status)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[24,13] 找不到符号
+[ERROR] 符号:   方法 setCreateDate(java.util.Date)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[25,13] 找不到符号
+[ERROR] 符号:   方法 setUpdateDate(java.util.Date)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[38,13] 找不到符号
+[ERROR] 符号:   方法 setUpdateDate(java.util.Date)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/FlowService.java:[40,29] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.Flow的变量 flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[26,19] 找不到符号
+[ERROR] 符号:   方法 setPage(int)
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[27,19] 找不到符号
+[ERROR] 符号:   方法 setLimit(int)
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[28,19] 找不到符号
+[ERROR] 符号:   方法 setTotal(long)
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[36,35] 找不到符号
+[ERROR] 符号:   方法 getPage()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[37,36] 找不到符号
+[ERROR] 符号:   方法 getLimit()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageRequest的变量 request
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[38,19] 找不到符号
+[ERROR] 符号:   方法 setTotal(int)
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[44,36] 找不到符号
+[ERROR] 符号:   方法 getPage()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[44,64] 找不到符号
+[ERROR] 符号:   方法 getLimit()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[45,45] 找不到符号
+[ERROR] 符号:   方法 getLimit()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[46,33] 找不到符号
+[ERROR] 符号:   方法 getTotal()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/http/PageResult.java:[47,39] 找不到符号
+[ERROR] 符号:   方法 getTotal()
+[ERROR] 位置: 类型为com.flow.eda.runner.http.PageResult<T>的变量 pageResult
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[32,9] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[57,9] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/log/LogAspect.java:[77,9] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.log.LogAspect
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/valve/ValveNodeManager.java:[48,51] 找不到符号
+[ERROR] 符号:   方法 getPeriod()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.valve.ValveNode的变量 valveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowDataRuntime.java:[70,34] 找不到符号
+[ERROR] 符号:   方法 getType()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 START
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowDataRuntime.java:[74,34] 找不到符号
+[ERROR] 符号:   方法 getType()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 TIMER
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/status/FlowStatusService.java:[39,48] 找不到符号
+[ERROR] 符号:   方法 getStatus()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.Flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/status/FlowStatusService.java:[68,57] 找不到符号
+[ERROR] 符号:   方法 getStatus()
+[ERROR] 位置: 类 com.flow.eda.runner.flow.Flow
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[49,34] 找不到符号
+[ERROR] 符号:   方法 setVersion(java.lang.String)
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[72,54] 找不到符号
+[ERROR] 符号:   方法 getId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/flow/node/data/NodeDataController.java:[73,58] 找不到符号
+[ERROR] 符号:   方法 getFlowId()
+[ERROR] 位置: 类型为com.flow.eda.runner.flow.node.data.NodeData的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/NodeTypeEnum.java:[88,23] 找不到符号
+[ERROR] 符号:   方法 getType()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 anEnum
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/NodeTypeEnum.java:[100,24] 找不到符号
+[ERROR] 符号:   方法 getClazz()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.NodeTypeEnum的变量 typeEnum
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/instance/FlowInstanceService.java:[96,30] 找不到符号
+[ERROR] 符号:   方法 stopFlow(java.lang.String)
+[ERROR] 位置: 类型为com.flow.eda.runner.status.FlowStatusService的变量 flowStatusService
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[15,31] 找不到符号
+[ERROR] 符号:   方法 getClientId()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[18,61] 找不到符号
+[ERROR] 符号:   方法 getClient()
+[ERROR] 位置: 类 com.flow.eda.runner.node.mqtt.AbstractMqttNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[34,31] 找不到符号
+[ERROR] 符号:   方法 getClientId()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[47,26] 找不到符号
+[ERROR] 符号:   方法 getClientId()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/mqtt/MqttClientManager.java:[48,63] 找不到符号
+[ERROR] 符号:   方法 getClientId()
+[ERROR] 位置: 类型为com.flow.eda.runner.node.mqtt.AbstractMqttNode的变量 node
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/http/receive/HttpReceiveNode.java:[67,13] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.node.http.receive.HttpReceiveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/node/http/receive/HttpReceiveNode.java:[101,13] 找不到符号
+[ERROR] 符号:   变量 log
+[ERROR] 位置: 类 com.flow.eda.runner.node.http.receive.HttpReceiveNode
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[77,29] 找不到符号
+[ERROR] 符号:   类 FlowInstanceRepository
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[77,96] 找不到符号
+[ERROR] 符号:   类 FlowInstanceRepository
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[78,29] 找不到符号
+[ERROR] 符号:   类 FlowInstanceLogDO
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[78,57] 找不到符号
+[ERROR] 符号:   类 FlowInstanceLogDO
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[101,17] 找不到符号
+[ERROR] 符号:   类 FlowInstanceRepository
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[101,84] 找不到符号
+[ERROR] 符号:   类 FlowInstanceRepository
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[102,17] 找不到符号
+[ERROR] 符号:   类 FlowInstanceLogDO
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[102,45] 找不到符号
+[ERROR] 符号:   类 FlowInstanceLogDO
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] /D:/work/project/flow-eda/flow-eda-runner/src/main/java/com/flow/eda/runner/runtime/FlowExecutor.java:[201,13] 找不到符号
+[ERROR] 符号:   类 FlowInstanceRepository
+[ERROR] 位置: 类 com.flow.eda.runner.runtime.FlowExecutor
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
