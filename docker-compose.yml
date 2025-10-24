@@ -20,26 +20,26 @@ services:
   #     - "15672:15672"
   #   volumes:
   #     - /root/app/rabbitmq/data:/var/lib/rabbitmq
-  # Nacos不再需要，已改为单体应用
-  # nacos:
-  #   image: nacos/nacos-server
-  #   container_name: nacos
-  #   ports:
-  #     - "8848:8848"
-  #     - "9090:8080"
-  #     - "9848:9848"
-  #     - "9849:9849"
-  #   environment:
-  #     MODE: standalone
-  #     NACOS_AUTH_TOKEN: SecretKey012345678901234567890123456789012345678901234567
-  #     NACOS_AUTH_IDENTITY_KEY: serverIdentity
-  #     NACOS_AUTH_IDENTITY_VALUE: security
-  #     JVM_XMS: 256m
-  #     JVM_XMX: 256m
-  #     JVM_XMN: 256m
-  #   volumes:
-  #     - /root/app/nacos/data:/home/nacos/data
-  #     - /root/app/nacos/logs:/home/nacos/logs
+  # Nacos服务注册中心（gateway需要）
+  nacos:
+    image: nacos/nacos-server
+    container_name: nacos
+    ports:
+      - "8848:8848"
+      - "9090:8080"
+      - "9848:9848"
+      - "9849:9849"
+    environment:
+      MODE: standalone
+      NACOS_AUTH_TOKEN: SecretKey012345678901234567890123456789012345678901234567
+      NACOS_AUTH_IDENTITY_KEY: serverIdentity
+      NACOS_AUTH_IDENTITY_VALUE: security
+      JVM_XMS: 256m
+      JVM_XMX: 256m
+      JVM_XMN: 256m
+    volumes:
+      - /root/app/nacos/data:/home/nacos/data
+      - /root/app/nacos/logs:/home/nacos/logs
   nginx:
     image: nginx
     container_name: nginx
@@ -49,6 +49,12 @@ services:
       - /root/app/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - /root/app/nginx/conf/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - /root/app/nginx/logs:/wwwlogs
+  gateway:
+    image: flow-eda-gateway
+    container_name: flow-eda-gateway
+    network_mode: host
+    environment:
+      - NACOS_SERVER_ADDR=localhost:8848
   server:
     image: flow-eda-server
     container_name: flow-eda-server

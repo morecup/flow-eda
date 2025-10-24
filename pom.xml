@@ -43,6 +43,7 @@
     <modules>
         <module>flow-eda-common</module>
         <module>flow-eda-server</module>
+        <module>flow-eda-gateway</module>
     </modules>
 
     <build>

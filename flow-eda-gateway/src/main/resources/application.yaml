@@ -1,0 +1,63 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: flow-eda-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+    gateway:
+      # 路由配置
+      routes:
+        # Server服务路由（合并后的统一服务）
+        - id: flow-eda-server
+          uri: lb://flow-eda-server
+          predicates:
+            - Path=/flow-eda-server/**
+          filters:
+            - StripPrefix=1
+        # 保留旧的web路由以兼容（指向server）
+        - id: flow-eda-web-compat
+          uri: lb://flow-eda-server
+          predicates:
+            - Path=/flow-eda-web/**
+          filters:
+            - StripPrefix=1
+        # 保留旧的runner路由以兼容（指向server）
+        - id: flow-eda-runner-compat
+          uri: lb://flow-eda-server
+          predicates:
+            - Path=/flow-eda-runner/**
+          filters:
+            - StripPrefix=1
+      # 全局CORS配置
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      # 服务发现配置
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+# 白名单配置（不需要认证的路径）
+ignore:
+  whites:
+    # oauth 移除后无需白名单
+    - /web/flow/data/page
+    - /web/node/page
+    - /actuator/**
