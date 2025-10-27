@@ -637,7 +637,7 @@ export default {
     let logTimer;
     const fetchLogContent = async () => {
       if (!currentInstanceId.value) return;
-      const res = await fetch(`/flow-eda-runner/api/instances/${encodeURIComponent(currentInstanceId.value)}/logs`);
+      const res = await fetch(`/flow-eda-server/api/instances/${encodeURIComponent(currentInstanceId.value)}/logs`);
       if (res.ok) {
         const text = await res.text();
         try {
@@ -780,7 +780,7 @@ export default {
         flowStatus.value = "RUNNING";
         ElMessage.success("已启动实例:" + res.instanceId);
         // 触发 Runner 执行实例（直接调用实例级别的执行接口）
-        await fetch(`/flow-eda-web/api/v1/node/data/run?flowId=${encodeURIComponent(props.flowId)}&instanceId=${encodeURIComponent(res.instanceId)}`, { method: 'POST' });
+        await fetch(`/flow-eda-server/api/v1/node/data/run?flowId=${encodeURIComponent(props.flowId)}&instanceId=${encodeURIComponent(res.instanceId)}`, { method: 'POST' });
 
         // 轮询实例状态
         clearInterval(instancePollTimer);
