@@ -4,12 +4,12 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   server: {
     host: '0.0.0.0',
-    port: 3000,
+    port: 3002,
     cors: true,
     proxy: {
       // 统一的 Server 服务 API 请求通过网关
       "^/flow-eda-server": {
-        target: `http://localhost:8090`,
+        target: `http://localhost:8060`,
         ws: true,
         changeOrigin: true,
       },

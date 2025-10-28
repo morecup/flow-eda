@@ -10,6 +10,19 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  cloud:
+    nacos:
+      # 服务注册发现
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:192.168.0.4:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:allprs@nacos}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      # 配置中心（当前不使用，显式禁用）
+      config:
+        enabled: false
+
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
