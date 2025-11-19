@@ -211,7 +211,19 @@ public class FlowExecutor {
                 node.setInputJson(currentNode.getParams().toJson());
             }
             if (msg.containsKey("output")) {
-                node.setOutputJson(msg.get("output", Document.class).toJson());
+                Document output = msg.get("output", Document.class);
+                node.setOutputJson(output.toJson());
+
+                // 尝试提取 jobId (针对 GenericAlgorithmNode)
+                if (output.containsKey("algorithmResult")) {
+                    Document algoResult = output.get("algorithmResult", Document.class);
+                    if (algoResult != null && algoResult.containsKey("jobId")) {
+                        Object jobIdObj = algoResult.get("jobId");
+                        if (jobIdObj instanceof Number) {
+                            node.setJobId(((Number) jobIdObj).longValue());
+                        }
+                    }
+                }
             }
 
             // 设置错误信息

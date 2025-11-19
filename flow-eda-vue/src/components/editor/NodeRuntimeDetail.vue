@@ -16,6 +16,7 @@
           <el-tag v-else-if="node?.status === 'FAILED'" type="danger">失败</el-tag>
           <el-tag v-else type="info">未运行</el-tag>
         </el-descriptions-item>
+        <el-descriptions-item v-if="runtimeInfo?.jobId" label="Job ID">{{ runtimeInfo.jobId }}</el-descriptions-item>
         <el-descriptions-item label="执行时间">{{ formatDuration(runtimeInfo?.durationMs) }}</el-descriptions-item>
       </el-descriptions>
 

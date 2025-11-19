@@ -11,6 +11,7 @@ public class FlowInstanceNodeDO {
     private String nodeId;
     private String nodeName;
     private String nodeType;
+    private Long jobId;
     private String status;
     private Long durationMs;
     private String inputJson;
@@ -59,6 +60,14 @@ public class FlowInstanceNodeDO {
 
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
     public String getStatus() {

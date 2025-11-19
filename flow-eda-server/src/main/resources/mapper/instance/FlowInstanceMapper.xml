@@ -21,6 +21,7 @@
         <result property="nodeId" column="node_id" />
         <result property="nodeName" column="node_name" />
         <result property="nodeType" column="node_type" />
+        <result property="jobId" column="job_id" />
         <result property="status" column="status" />
         <result property="durationMs" column="duration_ms" />
         <result property="inputJson" column="input_json" />
@@ -76,22 +77,23 @@
 
     <insert id="insertNodes">
         INSERT INTO flow_instance_node
-        (instance_id, node_id, node_name, node_type, status, duration_ms, input_json, output_json, error_stack, start_time, end_time, created_at, updated_at)
+        (instance_id, node_id, node_name, node_type, job_id, status, duration_ms, input_json, output_json, error_stack, start_time, end_time, created_at, updated_at)
         VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.instanceId}, #{item.nodeId}, #{item.nodeName}, #{item.nodeType}, #{item.status}, #{item.durationMs},
+            (#{item.instanceId}, #{item.nodeId}, #{item.nodeName}, #{item.nodeType}, #{item.jobId}, #{item.status}, #{item.durationMs},
             #{item.inputJson}, #{item.outputJson}, #{item.errorStack}, #{item.startTime}, #{item.endTime}, #{item.createdAt}, #{item.updatedAt})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateNode">
         INSERT INTO flow_instance_node
-        (instance_id, node_id, node_name, node_type, status, duration_ms, input_json, output_json, error_stack, start_time, end_time, created_at, updated_at)
+        (instance_id, node_id, node_name, node_type, job_id, status, duration_ms, input_json, output_json, error_stack, start_time, end_time, created_at, updated_at)
         VALUES
-        (#{instanceId}, #{nodeId}, #{nodeName}, #{nodeType}, #{status}, #{durationMs},
+        (#{instanceId}, #{nodeId}, #{nodeName}, #{nodeType}, #{jobId}, #{status}, #{durationMs},
         #{inputJson}, #{outputJson}, #{errorStack}, #{startTime}, #{endTime}, #{createdAt}, #{updatedAt})
         ON DUPLICATE KEY UPDATE
         status = VALUES(status),
+        job_id = VALUES(job_id),
         duration_ms = VALUES(duration_ms),
         output_json = VALUES(output_json),
         error_stack = VALUES(error_stack),
