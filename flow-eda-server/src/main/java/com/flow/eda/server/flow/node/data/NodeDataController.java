@@ -54,12 +54,11 @@ public class NodeDataController {
     @OperationLog
     @PostMapping("/node/data/run")
     public Result<String> runNodeData(@RequestParam String flowId, @RequestParam(required = false) String instanceId) {
-        if (instanceId != null && !instanceId.isEmpty()) {
-            nodeDataService.runNodeData(flowId, instanceId);
-        } else {
-            nodeDataService.runNodeData(flowId);
+        if (instanceId == null || instanceId.isEmpty()) {
+            instanceId = java.util.UUID.randomUUID().toString();
         }
-        return Result.ok();
+        nodeDataService.runNodeData(flowId, instanceId);
+        return Result.ok(instanceId);
     }
 
     /** 校验节点数据的正确性 */
