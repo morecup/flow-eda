@@ -1,16 +1,18 @@
 package com.flow.eda.server.runtime.node.algorithm;
 
+import com.allprs.job.center.api.enums.JobStatus;
+import com.allprs.job.center.api.feign.JobCenterJobClient;
 import com.flow.eda.common.exception.FlowException;
+import com.flow.eda.server.common.ApplicationContextUtil;
 import com.flow.eda.server.runtime.node.AbstractNode;
 import com.flow.eda.server.runtime.node.NodeFunction;
 import com.flow.eda.server.runtime.node.NodeVerify;
 import org.bson.Document;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 通用算法节点：
@@ -29,6 +31,7 @@ public class GenericAlgorithmNode extends AbstractNode {
     @Override
     public void run(NodeFunction callback) {
         try {
+            // 1. 准备参数
             Document in = getInput();
             Object inputAlgorithmParams = in != null ? in.get("algorithmParams") : null;
 
@@ -36,10 +39,54 @@ public class GenericAlgorithmNode extends AbstractNode {
             flattened.addAll(flattenValues(localAlgorithmParams));
             flattened.addAll(flattenValues(inputAlgorithmParams));
             String joined = joinBySpace(flattened);
-            Document feignRes = callFeignStub(algorithmId, joined);
-            Document common = toCommonParams(feignRes);
+
+            // 2. 获取 Feign 客户端
+            JobCenterJobClient jobClient = ApplicationContextUtil.getBean(JobCenterJobClient.class);
+
+            // 3. 构建请求
+            JobCenterJobClient.JobCreateRequest request = new JobCenterJobClient.JobCreateRequest();
+            try {
+                request.setStrategyId(Long.parseLong(algorithmId));
+            } catch (NumberFormatException e) {
+                throw new FlowException("Invalid algorithmId format, must be Long: " + algorithmId);
+            }
+            // 任务名称：算法ID + 当前时间
+            request.setName(algorithmId + "_" + System.currentTimeMillis());
+            // 参数：折叠后的参数
+            request.setJobParam(joined);
+
+            // 4. 提交任务
+            long jobId = jobClient.addAndReturnId(request);
+
+            // 5. 轮询状态
+            JobStatus finalStatus;
+            while (true) {
+                JobStatus status = jobClient.getStatus(jobId);
+                if (status == JobStatus.SUCCESS) {
+                    finalStatus = status;
+                    break;
+                }
+                if (status == JobStatus.FAIL || status == JobStatus.STOP || status == JobStatus.CANCEL) {
+                    throw new FlowException("Job failed with status: " + status.getDesc());
+                }
+                // 其他状态继续等待 (ON_QUEUE, ON_DEL, PAUSE)
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw FlowException.wrap(e, "Job polling interrupted");
+                }
+            }
+
+            // 6. 返回结果
             setStatus(Status.FINISHED);
-            callback.callback(output().append("algorithmResult", common));
+            // 返回 jobID 和状态
+            Document result = new Document("jobId", jobId)
+                    .append("status", finalStatus.getCode())
+                    .append("desc", finalStatus.getDesc());
+            
+            callback.callback(output().append("algorithmResult", result));
+
         } catch (Exception e) {
             throw FlowException.wrap(e);
         }
@@ -89,26 +136,5 @@ public class GenericAlgorithmNode extends AbstractNode {
 
     private String joinBySpace(List<String> values) {
         return String.join(" ", values);
-    }
-
-    /** 固定返回的 feign 调用占位实现 */
-    private Document callFeignStub(String algoId, String payload) {
-        return new Document("code", 0)
-                .append("algoId", algoId)
-                .append("data", new Document("echo", payload).append("length", payload.length()).append("algorithmId", algoId));
-    }
-
-    /** 将外部返回转为通用参数结构 */
-    private Document toCommonParams(Document res) {
-        Document common = new Document();
-        if (res != null) {
-            Object data = res.get("data");
-            if (data instanceof Document) {
-                common.putAll((Document) data);
-            } else if (data != null) {
-                common.append("data", data);
-            }
-        }
-        return common;
     }
 }
