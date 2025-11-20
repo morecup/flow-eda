@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS flow_instance_node (
     node_id VARCHAR(64) NOT NULL COMMENT '节点ID',
     node_name VARCHAR(128) NULL COMMENT '节点名称',
     node_type VARCHAR(64) NULL COMMENT '节点类型',
+    `job_id`        BIGINT NULL COMMENT '外部任务ID',
     status VARCHAR(32) NOT NULL COMMENT '状态: PENDING/RUNNING/SUCCESS/FAILED/SKIPPED',
     duration_ms BIGINT NULL COMMENT '执行时长(毫秒)',
     input_json TEXT NULL COMMENT '输入数据JSON',
