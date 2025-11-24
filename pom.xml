@@ -44,6 +44,7 @@
         <module>flow-eda-common</module>
         <module>flow-eda-server</module>
         <module>flow-eda-gateway</module>
+        <module>flow-eda-feign</module>
     </modules>
 
     <build>
