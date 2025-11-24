@@ -5,6 +5,7 @@ import com.flow.eda.common.model.FlowData;
 import com.flow.eda.common.utils.MergeBuilder;
 import com.flow.eda.server.flow.node.type.NodeType;
 import com.flow.eda.server.flow.node.type.NodeTypeService;
+import com.flow.eda.server.runtime.node.NodeTypeEnum;
 import com.flow.eda.server.runtime.FlowDataRuntime;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.flow.eda.common.utils.CollectionUtil.isEmpty;
 
@@ -53,18 +55,17 @@ public class NodeDataService {
     }
 
     public void runNodeData(String flowId) {
-        flowDataRuntime.runFlowData(this.queryNodeData(flowId));
+        this.runNodeData(flowId, null, null);
     }
 
     public void runNodeData(String flowId, String instanceId) {
+        this.runNodeData(flowId, instanceId, null);
+    }
+
+    public void runNodeData(String flowId, String instanceId, Map<String, Object> payload) {
         List<FlowData> data = this.queryNodeData(flowId);
-        // 将 instanceId 透传至 Runner
-        for (FlowData d : data) {
-            org.bson.Document params = d.getParams();
-            if (params == null) params = new org.bson.Document();
-            params.put("instanceId", instanceId);
-            d.setParams(params);
-        }
+        this.injectPayload(data, payload);
+        this.injectInstanceId(data, instanceId);
         flowDataRuntime.runFlowData(data);
     }
 
@@ -76,6 +77,37 @@ public class NodeDataService {
         List<FlowData> data = new ArrayList<>();
         list.forEach(n -> data.add(this.convert(n)));
         return data;
+    }
+
+    private void injectPayload(List<FlowData> data, Map<String, Object> payload) {
+        if (payload == null || payload.isEmpty()) {
+            return;
+        }
+        Document payloadDoc = new Document(payload);
+        data.stream()
+                .filter(d -> NodeTypeEnum.START.getType().equals(d.getType()))
+                .forEach(d -> {
+                    Document params = d.getParams();
+                    if (params == null) {
+                        params = new Document();
+                    }
+                    params.put("payload", new Document(payloadDoc));
+                    d.setParams(params);
+                });
+    }
+
+    private void injectInstanceId(List<FlowData> data, String instanceId) {
+        if (instanceId == null || instanceId.isEmpty()) {
+            return;
+        }
+        for (FlowData d : data) {
+            Document params = d.getParams();
+            if (params == null) {
+                params = new Document();
+            }
+            params.put("instanceId", instanceId);
+            d.setParams(params);
+        }
     }
 
     private FlowData convert(NodeData nodeData) {

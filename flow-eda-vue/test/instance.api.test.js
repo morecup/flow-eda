@@ -1,10 +1,13 @@
 import { createInstanceApi } from '../src/api/instance.js';
 
+const isCreateRequest = (url) => url.endsWith('/api/flow/instances') || url.endsWith('/api/instances');
+const isDetailRequest = (url) => url.includes('/api/flow/instances/') || url.includes('/api/instances/');
+
 async function fakeReqSuccess(config) {
-  if (config.method === 'post' && config.url.endsWith('/api/flow/instances')) {
+  if (config.method === 'post' && isCreateRequest(config.url)) {
     return { instanceId: 'inst-x' };
   }
-  if (config.method === 'get' && config.url.includes('/api/flow/instances/')) {
+  if (config.method === 'get' && isDetailRequest(config.url)) {
     return { instanceId: 'inst-x', status: 'FINISHED' };
   }
   throw new Error('unexpected request');
@@ -13,7 +16,7 @@ async function fakeReqSuccess(config) {
 async function fakeReqPoll(config) {
   // first GET -> RUNNING, second -> FINISHED
   fakeReqPoll.count = (fakeReqPoll.count || 0) + 1;
-  if (config.method === 'post' && config.url.endsWith('/api/flow/instances')) {
+  if (config.method === 'post' && isCreateRequest(config.url)) {
     return { instanceId: 'inst-y' };
   }
   if (config.method === 'get') {

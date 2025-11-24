@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.flow.eda.common.utils.CollectionUtil.isEmpty;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping({"/api/v1", "/api/v1/feign"})
 public class NodeDataController {
     @Autowired private NodeDataService nodeDataService;
 
@@ -53,11 +54,15 @@ public class NodeDataController {
 
     @OperationLog
     @PostMapping("/node/data/run")
-    public Result<String> runNodeData(@RequestParam String flowId, @RequestParam(required = false) String instanceId) {
-        if (instanceId == null || instanceId.isEmpty()) {
-            instanceId = java.util.UUID.randomUUID().toString();
+    public Result<String> runNodeData(@RequestBody NodeDataRunRequest request) {
+        if (request == null || request.getFlowId() == null || request.getFlowId().isEmpty()) {
+            throw new InvalidParameterException("FlowId is required");
         }
-        nodeDataService.runNodeData(flowId, instanceId);
+        String instanceId = request.getInstanceId();
+        if (instanceId == null || instanceId.isEmpty()) {
+            instanceId = UUID.randomUUID().toString();
+        }
+        nodeDataService.runNodeData(request.getFlowId(), instanceId, request.getPayload());
         return Result.ok(instanceId);
     }
 

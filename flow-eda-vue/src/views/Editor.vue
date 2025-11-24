@@ -761,7 +761,18 @@ export default {
     };
 
     // 运行本流程
-    const executeFlow = async () => {
+    const executeFlow = async (runtimeParamText = "") => {
+      let customPayload = null;
+      let hasCustomPayload = false;
+      if (runtimeParamText && runtimeParamText.trim()) {
+        try {
+          customPayload = JSON.parse(runtimeParamText);
+          hasCustomPayload = true;
+        } catch (err) {
+          ElMessage.error("运行参数必须为合法 JSON");
+          return;
+        }
+      }
       data.nodeList.forEach((v) => {
         v.status = undefined;
         v.error = undefined;
@@ -780,7 +791,24 @@ export default {
         flowStatus.value = "RUNNING";
         ElMessage.success("已启动实例:" + res.instanceId);
         // 触发 Runner 执行实例（直接调用实例级别的执行接口）
-        await fetch(`/flow-eda-server/api/v1/node/data/run?flowId=${encodeURIComponent(props.flowId)}&instanceId=${encodeURIComponent(res.instanceId)}`, { method: 'POST' });
+        const runBody = {
+          flowId: props.flowId,
+          instanceId: res.instanceId,
+        };
+        if (hasCustomPayload) {
+          runBody.payload = customPayload;
+        }
+        const runResp = await fetch(`/flow-eda-server/api/v1/node/data/run`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(runBody),
+        });
+        if (!runResp.ok) {
+          const msg = await runResp.text();
+          throw new Error(msg || '触发实例执行失败');
+        }
 
         // 轮询实例状态
         clearInterval(instancePollTimer);
@@ -835,7 +863,7 @@ export default {
           }
         }, 1000);
       } catch (e) {
-        ElMessage.error("启动实例失败");
+        ElMessage.error("启动实例失败" + (e && e.message ? `: ${e.message}` : ""));
       }
     };
 

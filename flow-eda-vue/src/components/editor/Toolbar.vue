@@ -121,15 +121,18 @@ export default {
     };
 
     const run = () => {
-      ElMessageBox.confirm(
-        "确认运行本流程？这将会保存本流程并覆盖之前的数据",
-        "提示",
+      ElMessageBox.prompt(
+        "请输入运行参数（JSON，可选），确认后将保存并运行当前流程。",
+        "运行流程",
         {
-          type: "warning",
+          confirmButtonText: "开始运行",
+          cancelButtonText: "取消",
+          inputType: "textarea",
+          inputPlaceholder: '{"example":"value"}',
         }
       )
-        .then(() => {
-          context.emit("executeFlow");
+        .then(({ value }) => {
+          context.emit("executeFlow", value);
           selectedVersion.value = props.versions[0];
         })
         .catch(() => {});
