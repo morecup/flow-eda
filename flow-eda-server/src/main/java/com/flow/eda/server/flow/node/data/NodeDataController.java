@@ -3,6 +3,7 @@ package com.flow.eda.server.flow.node.data;
 import com.flow.eda.common.exception.InvalidParameterException;
 import com.flow.eda.common.exception.InvalidStateException;
 import com.flow.eda.common.http.Result;
+import com.flow.eda.feign.dto.NodeDataRunRequest;
 import com.flow.eda.common.utils.CheckFieldUtil;
 import com.flow.eda.server.log.OperationLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import static com.flow.eda.common.utils.CollectionUtil.isEmpty;
 
 @RestController
-@RequestMapping({"/api/v1", "/api/v1/feign"})
+@RequestMapping("/api/v1")
 public class NodeDataController {
     @Autowired private NodeDataService nodeDataService;
 
