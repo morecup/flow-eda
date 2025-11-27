@@ -6,6 +6,7 @@ import com.flow.eda.server.runtime.node.condition.ConditionNode;
 import com.flow.eda.server.runtime.node.delay.DelayNode;
 import com.flow.eda.server.runtime.node.algorithm.TifPathNode;
 import com.flow.eda.server.runtime.node.algorithm.GenericAlgorithmNode;
+import com.flow.eda.server.runtime.node.algorithm.DataIngestNode;
 import com.flow.eda.server.runtime.node.standard.StandardizeParamNode;
 import com.flow.eda.server.runtime.node.email.EmailNode;
 import com.flow.eda.server.runtime.node.http.receive.HttpReceiveNode;
@@ -50,6 +51,7 @@ public enum NodeTypeEnum {
     STANDARDIZE("standardize", StandardizeParamNode.class),
     GENERIC_ALGO("generic_algo", GenericAlgorithmNode.class),
     TIF_PATH("tif_path", TifPathNode.class),
+    DATA_INGEST("data_ingest", DataIngestNode.class),
 
     /** 解析节点 */
     JSON_PARSER("json_parser", JsonParserNode.class),

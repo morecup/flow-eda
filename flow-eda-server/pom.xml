@@ -169,6 +169,13 @@
             <version>3.6.3</version>
         </dependency>
 
+        <!-- Allprs Data Manage API -->
+        <dependency>
+            <groupId>com.allprs</groupId>
+            <artifactId>allprs-api-datamanage</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
