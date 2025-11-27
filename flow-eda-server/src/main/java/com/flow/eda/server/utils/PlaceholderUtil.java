@@ -92,7 +92,9 @@ public class PlaceholderUtil {
         for (String k : keys) {
             Object value = res.get(k);
             if (value != null) {
-                str = StringUtils.replace(str, "${" + k + "}", value.toString());
+                // 对字符串值进行 JSON 转义，避免反斜杠等特殊字符导致解析错误
+                String replacement = escapeJsonString(value.toString());
+                str = StringUtils.replace(str, "${" + k + "}", replacement);
             }
         }
         try {
@@ -101,6 +103,39 @@ public class PlaceholderUtil {
             e.printStackTrace();
         }
         return output;
+    }
+
+    /**
+     * 对字符串进行 JSON 转义处理
+     * 将反斜杠、双引号等特殊字符转义为 JSON 安全的格式
+     */
+    private static String escapeJsonString(String value) {
+        if (value == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (char c : value.toCharArray()) {
+            switch (c) {
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     @SuppressWarnings("rawtypes")

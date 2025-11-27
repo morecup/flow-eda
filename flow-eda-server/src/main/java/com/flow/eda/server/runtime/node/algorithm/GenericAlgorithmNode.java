@@ -84,8 +84,13 @@ public class GenericAlgorithmNode extends AbstractNode {
             Document result = new Document("jobId", jobId)
                     .append("status", finalStatus.getCode())
                     .append("desc", finalStatus.getDesc());
-            
-            callback.callback(output().append("algorithmResult", result));
+
+            Document out = output().append("algorithmResult", result);
+            // 原样输出输入的 algorithmParams
+            if (inputAlgorithmParams != null) {
+                out.append("algorithmParams", inputAlgorithmParams);
+            }
+            callback.callback(out);
 
         } catch (Exception e) {
             throw FlowException.wrap(e);
