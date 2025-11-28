@@ -96,6 +96,7 @@ public class DataIngestNode extends AbstractNode {
             callback.callback(output);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw FlowException.wrap(e);
         }
     }
