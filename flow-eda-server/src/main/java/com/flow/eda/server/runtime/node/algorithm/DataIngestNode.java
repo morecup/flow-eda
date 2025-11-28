@@ -1,6 +1,7 @@
 package com.flow.eda.server.runtime.node.algorithm;
 
 import com.allprs.datamanage.api.RemoteDataIngestService;
+import com.allprs.datamanage.api.dto.CreateAbsolutePathIngestTaskDTO;
 import com.allprs.datamanage.api.dto.CreateIngestTaskDTO;
 import com.allprs.datamanage.api.dto.RemoteResult;
 import com.flow.eda.common.exception.FlowException;
@@ -68,15 +69,15 @@ public class DataIngestNode extends AbstractNode {
             RemoteDataIngestService ingestService = ApplicationContextUtil.getBean(RemoteDataIngestService.class);
 
             // 2. 构建请求
-            CreateIngestTaskDTO dto = new CreateIngestTaskDTO();
+            CreateAbsolutePathIngestTaskDTO dto = new CreateAbsolutePathIngestTaskDTO();
             dto.setTaskName("ingest_task_" + System.currentTimeMillis());
-            dto.setSourcePath(this.ingestDataPath);
+            dto.setAbsoluteSourcePath(this.ingestDataPath);
             dto.setDataType(this.dataType);
             dto.setConfigId(this.configId);
             dto.setMappingId(this.mappingId);
 
             // 3. 同步调用（接口本身是同步阻塞的）
-            RemoteResult<Long> result = ingestService.createAndExecuteTask(dto);
+            RemoteResult<Long> result = ingestService.createAndExecuteTaskByAbsolutePath(dto);
 
             // 4. 处理结果 - 失败时抛异常中断流程
             if (result == null || !result.isSuccess()) {
