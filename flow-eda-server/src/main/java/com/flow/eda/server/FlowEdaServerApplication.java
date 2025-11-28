@@ -25,6 +25,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @EnableScheduling
 @EnableCaching
 @EnableTransactionManagement
+@EnableFeignClients(basePackages = {"com.allprs.datamanage.api"})
 @ComponentScan(
     basePackages = {
         "com.flow.eda.server",
