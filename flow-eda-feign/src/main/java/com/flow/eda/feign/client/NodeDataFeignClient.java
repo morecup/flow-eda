@@ -1,6 +1,6 @@
 package com.flow.eda.feign.client;
 
-import com.flow.eda.common.http.Result;
+import com.flow.eda.feign.http.Result;
 import com.flow.eda.feign.dto.NodeDataRunRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

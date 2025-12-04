@@ -16,11 +16,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.flow.eda</groupId>
-            <artifactId>flow-eda-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
