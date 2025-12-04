@@ -15,7 +15,7 @@ spring:
       # 服务注册发现
       discovery:
         server-addr: ${NACOS_SERVER_ADDR:192.168.0.4:8848}
-        namespace: ${NACOS_NAMESPACE:public}
+        namespace: ${NACOS_NAMESPACE:0d33f080-4da2-49b7-8ddc-1e6a4001ca59}
         username: ${NACOS_USERNAME:nacos}
         password: ${NACOS_PASSWORD:allprs@nacos}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
