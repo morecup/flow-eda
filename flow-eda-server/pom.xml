@@ -179,6 +179,10 @@
                     <groupId>com.baomidou</groupId>
                     <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.allprs</groupId>
+                    <artifactId>allprs-common-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
