@@ -20,6 +20,7 @@ import com.flow.eda.server.runtime.node.output.OutputNode;
 import com.flow.eda.server.runtime.node.parser.html.HtmlParserNode;
 import com.flow.eda.server.runtime.node.parser.json.JsonParserNode;
 import com.flow.eda.server.runtime.node.parser.xml.XmlParserNode;
+import com.flow.eda.server.runtime.node.generator.xml.XmlGenerateNode;
 import com.flow.eda.server.runtime.node.postgresql.PostgresqlNode;
 import com.flow.eda.server.runtime.node.redis.RedisNode;
 import com.flow.eda.server.runtime.node.sequence.SequenceNode;
@@ -57,6 +58,7 @@ public enum NodeTypeEnum {
     JSON_PARSER("json_parser", JsonParserNode.class),
     HTML_PARSER("html_parser", HtmlParserNode.class),
     XML_PARSER("xml_parser", XmlParserNode.class),
+    XML_GENERATE("xml_generate", XmlGenerateNode.class),
 
     /** 网络节点 */
     HTTP_REQUEST("http_request", HttpRequestNode.class),

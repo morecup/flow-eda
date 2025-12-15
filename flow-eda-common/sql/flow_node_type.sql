@@ -32,6 +32,7 @@ INSERT INTO `flow_node_type` VALUES (12, 'generic_algo', '通用算法', '算法
 INSERT INTO `flow_node_type` VALUES (21, 'json_parser', 'JSON解析', '解析', '/svg/json_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析json格式的内容，可解析上游节点的输出参数，获取用户需要的参数信息');
 INSERT INTO `flow_node_type` VALUES (22, 'html_parser', 'HTML解析', '解析', '/svg/html_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析html格式的文本内容，可指定css选择器解析出目标元素，输出html内容或文本内容');
 INSERT INTO `flow_node_type` VALUES (23, 'xml_parser', 'XML解析', '解析', '/svg/xml_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析xml格式的文本内容，可转化为json格式的参数信息输出');
+INSERT INTO `flow_node_type` VALUES (24, 'xml_generate', 'XML生成', '解析', '/svg/xml_generate.svg', 'rgb(180 197 125 / 60%)', '基于xml模板生成新的xml内容，并支持参数覆盖');
 INSERT INTO `flow_node_type` VALUES (31, 'http_request', 'HTTP请求', '网络', '/svg/http_request.svg', 'rgb(235 186 73 / 75%)', '可以发起HTTP请求，支持所有的请求类型，支持携带各种请求参数信息以及token等请求头信息');
 INSERT INTO `flow_node_type` VALUES (32, 'http_receive', 'HTTP接收', '网络', '/svg/http_receive.svg', 'rgb(235 186 73 / 75%)', '可创建HTTP服务，用于接收HTTP请求，解析出请求参数，向下游输出。可根据请求参数处理业务逻辑，与HTTP响应节点搭配使用');
 INSERT INTO `flow_node_type` VALUES (33, 'http_response', 'HTTP响应', '网络', '/svg/http_response.svg', 'rgb(200 195 60 / 70%)', '可响应HTTP请求，与HTTP接收节点搭配使用，在处理完业务逻辑后，响应请求并返回数据，可根据上游节点的输出结果动态响应数据');

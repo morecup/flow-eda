@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Header>
+    <From>DEFAULT_FROM</From>
+    <To>DEFAULT_TO</To>
+  </Header>
+  <Body id="1">
+    <Amount>0</Amount>
+    <Items>
+      <Item>foo</Item>
+      <Item>bar</Item>
+    </Items>
+  </Body>
+</Root>
