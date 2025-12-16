@@ -28,7 +28,7 @@ INSERT INTO `flow_node_type` VALUES (8, 'split', '分割', '运算', '/svg/split
 INSERT INTO `flow_node_type` VALUES (9, 'valve', '阀门', '运算', '/svg/valve.svg', 'rgb(230 210 70 / 70%)', '阀门节点，可用于多条支路汇总时，限制某一段时间周期内，通过此节点的次数。默认100毫秒内仅允许通过一次');
 INSERT INTO `flow_node_type` VALUES (10, 'tif_path', 'TIF路径', '算法', '/svg/sequence.svg', 'rgb(200 180 75 / 60%)', '根据输入的 inputTifPath，输出父级目录到 outputTifPath');
 INSERT INTO `flow_node_type` VALUES (11, 'standardize', '标准化参数', '基础', '/svg/splice.svg', 'rgb(200 180 75 / 60%)', '仅将上游自定义参数(input)向下游传递，不附带其他参数');
-INSERT INTO `flow_node_type` VALUES (12, 'generic_algo', '通用算法', '算法', '/svg/sequence.svg', 'rgb(200 180 75 / 60%)', '将输入参数空格拼接调用外部算法（feign，占位），返回后转为通用参数输出');
+INSERT INTO `flow_node_type` VALUES (12, 'generic_algo', '通用算法', '算法', '/svg/sequence.svg', 'rgb(200 180 75 / 60%)', '使用algorithmInput作为jobParam调用外部算法（支持${}占位符），并透传上游input继续向下游传递');
 INSERT INTO `flow_node_type` VALUES (21, 'json_parser', 'JSON解析', '解析', '/svg/json_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析json格式的内容，可解析上游节点的输出参数，获取用户需要的参数信息');
 INSERT INTO `flow_node_type` VALUES (22, 'html_parser', 'HTML解析', '解析', '/svg/html_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析html格式的文本内容，可指定css选择器解析出目标元素，输出html内容或文本内容');
 INSERT INTO `flow_node_type` VALUES (23, 'xml_parser', 'XML解析', '解析', '/svg/xml_parser.svg', 'rgb(180 197 125 / 60%)', '用于解析xml格式的文本内容，可转化为json格式的参数信息输出');

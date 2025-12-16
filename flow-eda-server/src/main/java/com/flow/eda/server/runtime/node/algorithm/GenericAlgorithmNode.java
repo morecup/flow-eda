@@ -9,20 +9,17 @@ import com.flow.eda.server.runtime.node.NodeFunction;
 import com.flow.eda.server.runtime.node.NodeVerify;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 通用算法节点：
- * 1) 将上游输入参数扁平化为字符串列表并以空格拼接；
- * 2) 携带 algorithmId 作为固定参数，调用外部算法（此处先用本地固定返回代替 feign 调用）；
- * 3) 将返回结果转换为通用参数作为下游 input 输出。
+ * 1) 透传上游 input 到下游，保证占位符链路可用（与 XmlGenerateNode 行为一致）；
+ * 2) 使用 algorithmInput 作为算法入参，直接透传给 Feign（不要求 JSON 格式，支持 ${} 占位符）；
+ * 3) 提交任务并轮询状态，将结果输出为 algorithmResult。
  */
 public class GenericAlgorithmNode extends AbstractNode {
     private String algorithmId;
-    private Object localAlgorithmParams;
+    private String algorithmInput;
 
     public GenericAlgorithmNode(Document params) {
         super(params);
@@ -32,13 +29,7 @@ public class GenericAlgorithmNode extends AbstractNode {
     public void run(NodeFunction callback) {
         try {
             // 1. 准备参数
-            Document in = getInput();
-            Object inputAlgorithmParams = in != null ? in.get("algorithmParams") : null;
-
-            List<String> flattened = new ArrayList<>();
-            flattened.addAll(flattenValues(localAlgorithmParams));
-            flattened.addAll(flattenValues(inputAlgorithmParams));
-            String joined = joinBySpace(flattened);
+            String jobParam = this.algorithmInput;
 
             // 2. 获取 Feign 客户端
             JobCenterJobClient jobClient = ApplicationContextUtil.getBean(JobCenterJobClient.class);
@@ -52,8 +43,8 @@ public class GenericAlgorithmNode extends AbstractNode {
             }
             // 任务名称：算法ID + 当前时间
             request.setName(algorithmId + "_" + System.currentTimeMillis());
-            // 参数：折叠后的参数
-            request.setJobParam(joined);
+            // 参数：算法入参，直接透传给 Feign
+            request.setJobParam(jobParam);
 
             // 4. 提交任务
             long jobId = jobClient.addAndReturnId(request);
@@ -85,11 +76,19 @@ public class GenericAlgorithmNode extends AbstractNode {
                     .append("status", finalStatus.getCode())
                     .append("desc", finalStatus.getDesc());
 
-            Document out = output().append("algorithmResult", result);
-            // 原样输出输入的 algorithmParams
-            if (inputAlgorithmParams != null) {
-                out.append("algorithmParams", inputAlgorithmParams);
+            Document out = output();
+
+            // 始终透传上游 input，保证下游节点可继续使用占位符取值
+            Document passthroughInput = new Document();
+            passthroughInput.putAll(getInput());
+            Document payloadInput = out.get("input", Document.class);
+            if (payloadInput != null && !payloadInput.isEmpty()) {
+                passthroughInput.putAll(payloadInput);
             }
+            out.put("input", passthroughInput);
+
+            out.append("algorithmInput", jobParam);
+            out.append("algorithmResult", result);
             callback.callback(out);
 
         } catch (Exception e) {
@@ -101,45 +100,10 @@ public class GenericAlgorithmNode extends AbstractNode {
     protected void verify(Document params) {
         this.algorithmId = params.getString("algorithmId");
         NodeVerify.notBlank(this.algorithmId, "algorithmId");
-        // 保存本节点的 algorithmParams（可选）
-        this.localAlgorithmParams = params.get("algorithmParams");
+
+        String algorithmInput = params.getString("algorithmInput");
+        NodeVerify.notBlank(algorithmInput, "algorithmInput");
+        this.algorithmInput = algorithmInput;
     }
 
-    private List<String> flattenValues(Object root) {
-        List<String> out = new ArrayList<>();
-        flatten(root, out);
-        return out;
-    }
-
-    private void flatten(Object obj, List<String> out) {
-        if (obj == null) return;
-        if (obj instanceof Document) {
-            for (Map.Entry<String, Object> e : ((Document) obj).entrySet()) {
-                out.add(String.valueOf(e.getKey()));
-                flatten(e.getValue(), out);
-            }
-            return;
-        }
-        if (obj instanceof Map) {
-            for (Map.Entry<?, ?> e : ((Map<?, ?>) obj).entrySet()) {
-                out.add(String.valueOf(e.getKey()));
-                flatten(e.getValue(), out);
-            }
-            return;
-        }
-        if (obj instanceof Iterable) {
-            for (Object v : (Iterable<?>) obj) flatten(v, out);
-            return;
-        }
-        if (obj.getClass().isArray()) {
-            int len = java.lang.reflect.Array.getLength(obj);
-            for (int i = 0; i < len; i++) flatten(java.lang.reflect.Array.get(obj, i), out);
-            return;
-        }
-        out.add(String.valueOf(obj));
-    }
-
-    private String joinBySpace(List<String> values) {
-        return String.join(" ", values);
-    }
 }

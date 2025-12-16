@@ -14,7 +14,7 @@ CREATE TABLE `flow_node_type_param`  (
   `placeholder` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数值提示性内容',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_type_id`(`type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of flow_node_type_param
@@ -97,3 +97,4 @@ INSERT INTO `flow_node_type_param` VALUES (80, 9, 'times', '执行次数', 0, 'i
 INSERT INTO `flow_node_type_param` VALUES (81, 9, 'period', '限制周期（单位：ms）', 0, 'input', NULL, '默认100');
 INSERT INTO `flow_node_type_param` VALUES (82, 10, 'inputTifPath', 'TIF路径', 0, 'input', NULL, 'D:/path/to/file.tif');
 INSERT INTO `flow_node_type_param` VALUES (83, 12, 'algorithmId', '算法ID', 1, 'input', NULL, 'algo-xxxx');
+INSERT INTO `flow_node_type_param` VALUES (87, 12, 'algorithmInput', '算法输入', 1, 'input', NULL, '直接透传给算法 jobParam，支持${}占位符');
